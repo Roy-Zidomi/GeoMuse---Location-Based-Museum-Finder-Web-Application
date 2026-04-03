@@ -22,6 +22,10 @@ app.use(express.json());
 // Parse URL-encoded request body
 app.use(express.urlencoded({ extended: true }));
 
+// Serve static files (uploads)
+const path = require('path');
+app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
+
 // ========================
 // Routes
 // ========================

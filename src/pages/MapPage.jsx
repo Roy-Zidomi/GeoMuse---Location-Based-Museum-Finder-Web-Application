@@ -3,6 +3,7 @@ import { useTheme } from '../context/ThemeContext';
 import { getMuseums, getNearbyMuseums, getProvinces, getRegencies, getCategories } from '../api/museumApi';
 import MapView from '../components/map/MapView';
 import FilterPanel from '../components/map/FilterPanel';
+import MuseumDetailPanel from '../components/map/MuseumDetailPanel';
 import LoadingOverlay from '../components/map/LoadingOverlay';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Landmark, Moon, Sun, ArrowLeft, Menu, X, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -34,6 +35,7 @@ const MapPage = () => {
   // UI state
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [totalData, setTotalData] = useState(0);
+  const [selectedMuseum, setSelectedMuseum] = useState(null);
 
   // Fetch master data (provinces, categories) on mount
   useEffect(() => {
@@ -191,6 +193,16 @@ const MapPage = () => {
     setSearchQuery('');
     setNearbyMode(false);
     setUserLocation(null);
+    setSelectedMuseum(null);
+  };
+
+  const handleMuseumSelect = (museum) => {
+    setSelectedMuseum(museum);
+    setSidebarOpen(true); // Ensure sidebar is open to show details
+  };
+
+  const handleCloseDetail = () => {
+    setSelectedMuseum(null);
   };
 
   return (
@@ -237,34 +249,41 @@ const MapPage = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex relative overflow-hidden">
-        {/* Sidebar Filter */}
+        {/* Sidebar Filter / Detail Panel */}
         <div
           className={`absolute lg:relative z-10 h-full transition-all duration-300 ease-in-out ${sidebarOpen
               ? 'translate-x-0 w-80 lg:w-96'
               : '-translate-x-full lg:-translate-x-full w-80 lg:w-0'
             }`}
         >
-          <FilterPanel
-            provinces={provinces}
-            regencies={regencies}
-            categories={categories}
-            selectedProvince={selectedProvince}
-            selectedRegency={selectedRegency}
-            selectedCategory={selectedCategory}
-            searchQuery={searchQuery}
-            nearbyMode={nearbyMode}
-            nearbyRadius={nearbyRadius}
-            onProvinceChange={handleProvinceChange}
-            onRegencyChange={handleRegencyChange}
-            onCategoryChange={handleCategoryChange}
-            onSearch={handleSearch}
-            onNearby={handleNearby}
-            onRadiusChange={setNearbyRadius}
-            onResetNearby={handleResetNearby}
-            onResetFilters={handleResetFilters}
-            onClose={() => setSidebarOpen(false)}
-            totalResults={totalData}
-          />
+          {selectedMuseum ? (
+            <MuseumDetailPanel 
+              museum={selectedMuseum} 
+              onClose={handleCloseDetail} 
+            />
+          ) : (
+            <FilterPanel
+              provinces={provinces}
+              regencies={regencies}
+              categories={categories}
+              selectedProvince={selectedProvince}
+              selectedRegency={selectedRegency}
+              selectedCategory={selectedCategory}
+              searchQuery={searchQuery}
+              nearbyMode={nearbyMode}
+              nearbyRadius={nearbyRadius}
+              onProvinceChange={handleProvinceChange}
+              onRegencyChange={handleRegencyChange}
+              onCategoryChange={handleCategoryChange}
+              onSearch={handleSearch}
+              onNearby={handleNearby}
+              onRadiusChange={setNearbyRadius}
+              onResetNearby={handleResetNearby}
+              onResetFilters={handleResetFilters}
+              onClose={() => setSidebarOpen(false)}
+              totalResults={totalData}
+            />
+          )}
         </div>
 
         <button
@@ -301,6 +320,7 @@ const MapPage = () => {
             userLocation={userLocation}
             nearbyRadius={nearbyMode ? nearbyRadius : null}
             sidebarOpen={sidebarOpen}
+            onMuseumSelect={handleMuseumSelect}
           />
         </div>
       </div>

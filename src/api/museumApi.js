@@ -62,4 +62,29 @@ export const getCategories = async () => {
   return data;
 };
 
+/**
+ * Interactions (Unified Reviews & Photos)
+ */
+export const getMuseumInteractions = async (museumId) => {
+  const { data } = await api.get(`/interactions/museums/${museumId}`);
+  return data;
+};
+
+export const postMuseumReview = async (reviewData) => {
+  const { data } = await api.post('/interactions/reviews', reviewData);
+  return data;
+};
+
+export const postMuseumPhoto = async (formData) => {
+  const { data } = await api.post('/interactions/photos', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return data;
+};
+
+export const reactToInteraction = async (interactionId, type) => {
+  const { data } = await api.post(`/interactions/${interactionId}/react`, { type });
+  return data;
+};
+
 export default api;

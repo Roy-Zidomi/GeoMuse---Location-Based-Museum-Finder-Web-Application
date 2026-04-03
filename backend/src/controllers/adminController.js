@@ -83,14 +83,14 @@ const getMuseums = async (req, res, next) => {
  */
 const createMuseum = async (req, res, next) => {
   try {
-    const { source_id, nama_museum, latitude, longitude, provinsi_id, kabupaten_id, kategori_id } = req.body;
+    const { source_id, nama_museum, deskripsi, latitude, longitude, provinsi_id, kabupaten_id, kategori_id } = req.body;
 
     if (!nama_museum || !latitude || !longitude || !provinsi_id || !kabupaten_id) {
       return errorResponse(res, 400, 'Field nama_museum, latitude, longitude, provinsi_id, dan kabupaten_id wajib diisi');
     }
 
     const museum = await adminService.createMuseum({
-      source_id, nama_museum, latitude, longitude, provinsi_id, kabupaten_id, kategori_id,
+      source_id, nama_museum, deskripsi, latitude, longitude, provinsi_id, kabupaten_id, kategori_id,
     });
 
     return successResponse(res, 'Museum berhasil ditambahkan', museum, 201);
@@ -105,14 +105,14 @@ const createMuseum = async (req, res, next) => {
 const updateMuseum = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { nama_museum, latitude, longitude, provinsi_id, kabupaten_id, kategori_id } = req.body;
+    const { nama_museum, deskripsi, latitude, longitude, provinsi_id, kabupaten_id, kategori_id } = req.body;
 
     if (!nama_museum || !latitude || !longitude || !provinsi_id || !kabupaten_id) {
       return errorResponse(res, 400, 'Field nama_museum, latitude, longitude, provinsi_id, dan kabupaten_id wajib diisi');
     }
 
     const museum = await adminService.updateMuseum(id, {
-      nama_museum, latitude, longitude, provinsi_id, kabupaten_id, kategori_id,
+      nama_museum, deskripsi, latitude, longitude, provinsi_id, kabupaten_id, kategori_id,
     });
 
     if (!museum) {

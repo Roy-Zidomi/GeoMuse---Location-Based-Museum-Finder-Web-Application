@@ -7,6 +7,7 @@ const MuseumForm = ({ museum = null, onSubmit, onCancel, loading = false }) => {
 
   const [formData, setFormData] = useState({
     nama_museum: '',
+    deskripsi: '',
     latitude: '',
     longitude: '',
     provinsi_id: '',
@@ -25,6 +26,7 @@ const MuseumForm = ({ museum = null, onSubmit, onCancel, loading = false }) => {
     if (museum) {
       setFormData({
         nama_museum: museum.nama_museum || '',
+        deskripsi: museum.deskripsi || '',
         latitude: museum.latitude || '',
         longitude: museum.longitude || '',
         provinsi_id: museum.provinsi_id || '',
@@ -32,7 +34,7 @@ const MuseumForm = ({ museum = null, onSubmit, onCancel, loading = false }) => {
         kategori_id: museum.kategori_id || '',
       });
     } else {
-      setFormData({ nama_museum: '', latitude: '', longitude: '', provinsi_id: '', kabupaten_id: '', kategori_id: '' });
+      setFormData({ nama_museum: '', deskripsi: '', latitude: '', longitude: '', provinsi_id: '', kabupaten_id: '', kategori_id: '' });
     }
   }, [museum]);
 
@@ -99,7 +101,7 @@ const MuseumForm = ({ museum = null, onSubmit, onCancel, loading = false }) => {
       });
       setSuccess(isEdit ? 'Museum berhasil diperbarui!' : 'Museum berhasil ditambahkan!');
       if (!isEdit) {
-        setFormData({ nama_museum: '', latitude: '', longitude: '', provinsi_id: '', kabupaten_id: '', kategori_id: '' });
+        setFormData({ nama_museum: '', deskripsi: '', latitude: '', longitude: '', provinsi_id: '', kabupaten_id: '', kategori_id: '' });
       }
     } catch (err) {
       setErrors({ submit: err.response?.data?.message || 'Terjadi kesalahan' });
@@ -147,6 +149,17 @@ const MuseumForm = ({ museum = null, onSubmit, onCancel, loading = false }) => {
             className={inputClass('nama_museum')}
           />
           {errors.nama_museum && <p className="text-xs text-red-500 mt-1">{errors.nama_museum}</p>}
+        </div>
+
+        {/* Deskripsi */}
+        <div>
+          <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Deskripsi Museum (opsional)</label>
+          <textarea
+            value={formData.deskripsi}
+            onChange={(e) => handleChange('deskripsi', e.target.value)}
+            placeholder="Tambahkan penjelasan tentang museum ini..."
+            className={`${inputClass('deskripsi')} min-h-[100px] resize-y`}
+          />
         </div>
 
         {/* Provinsi & Kabupaten */}

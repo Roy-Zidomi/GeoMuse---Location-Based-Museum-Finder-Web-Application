@@ -8,7 +8,13 @@ import { MapPin, Tag, Building2, Globe, Navigation } from 'lucide-react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-const MapView = ({ museums = [], userLocation = null, nearbyRadius = null, sidebarOpen = true }) => {
+const MapView = ({ 
+  museums = [], 
+  userLocation = null, 
+  nearbyRadius = null, 
+  sidebarOpen = true,
+  onMuseumSelect 
+}) => {
   // Memoize markers to avoid re-creating icons on every render
   const markers = useMemo(() => {
     return museums
@@ -35,7 +41,11 @@ const MapView = ({ museums = [], userLocation = null, nearbyRadius = null, sideb
       />
 
       {/* Auto-zoom controller */}
-      <MapController museums={museums} userLocation={userLocation} sidebarOpen={sidebarOpen} />
+      <MapController 
+        museums={museums} 
+        userLocation={userLocation} 
+        sidebarOpen={sidebarOpen} 
+      />
 
       {/* Museum markers with clustering */}
       <MarkerClusterGroup
@@ -75,49 +85,11 @@ const MapView = ({ museums = [], userLocation = null, nearbyRadius = null, sideb
             key={museum.id}
             position={museum.position}
             icon={museum.icon}
+            eventHandlers={{
+              click: () => onMuseumSelect(museum),
+            }}
           >
-            <Popup className="museum-popup" maxWidth={280} minWidth={220}>
-              <div className="p-1">
-                <h3 className="font-bold text-base text-slate-900 mb-2 leading-tight">
-                  {museum.nama_museum}
-                </h3>
-
-                <div className="space-y-1.5 mb-3">
-                  {museum.nama_provinsi && (
-                    <div className="flex items-center gap-1.5 text-xs text-slate-600">
-                      <Globe size={12} className="text-blue-500 shrink-0" />
-                      <span>{museum.nama_provinsi}</span>
-                    </div>
-                  )}
-                  {museum.nama_kabupaten && (
-                    <div className="flex items-center gap-1.5 text-xs text-slate-600">
-                      <Building2 size={12} className="text-purple-500 shrink-0" />
-                      <span>{museum.nama_kabupaten}</span>
-                    </div>
-                  )}
-                  {museum.nama_kategori && (
-                    <div className="flex items-center gap-1.5 text-xs text-slate-600">
-                      <Tag size={12} className="text-amber-500 shrink-0" />
-                      <span>{museum.nama_kategori}</span>
-                    </div>
-                  )}
-                  {museum.distance_km !== undefined && (
-                    <div className="flex items-center gap-1.5 text-xs text-emerald-600 font-semibold">
-                      <Navigation size={12} className="shrink-0" />
-                      <span>{museum.distance_km} km dari lokasi Anda</span>
-                    </div>
-                  )}
-                </div>
-
-                <Link
-                  to={`/museum/${museum.id}`}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-medium rounded-lg transition-colors w-full justify-center"
-                >
-                  <MapPin size={12} />
-                  Lihat Detail
-                </Link>
-              </div>
-            </Popup>
+            {/* Popup removed to directly show detail on sidebar */}
           </Marker>
         ))}
       </MarkerClusterGroup>
