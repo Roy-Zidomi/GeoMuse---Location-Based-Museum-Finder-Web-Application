@@ -157,7 +157,7 @@ const getMuseumsAdmin = async ({ page = 1, limit = 10, offset = 0, search, provi
 
   // Data
   const sql = `
-    SELECT m.id, m.source_id, m.nama_museum, m.deskripsi, m.latitude, m.longitude,
+    SELECT m.id, m.source_id, m.nama_museum, m.deskripsi, m.harga_tiket, m.kepengurusan, m.website_url, m.latitude, m.longitude,
            m.provinsi_id, p.nama_provinsi,
            m.kabupaten_id, k.nama_kabupaten,
            m.kategori_id, kt.nama_kategori
@@ -185,16 +185,16 @@ const getMuseumsAdmin = async ({ page = 1, limit = 10, offset = 0, search, provi
 /**
  * Tambah museum baru
  */
-const createMuseum = async ({ source_id, nama_museum, deskripsi, latitude, longitude, provinsi_id, kabupaten_id, kategori_id }) => {
+const createMuseum = async ({ source_id, nama_museum, deskripsi, harga_tiket, kepengurusan, website_url, latitude, longitude, provinsi_id, kabupaten_id, kategori_id }) => {
   const normalizedSourceId = typeof source_id === 'string' ? source_id.trim() : '';
   const finalSourceId = normalizedSourceId || `admin/${randomUUID()}`;
 
   const sql = `
-    INSERT INTO museum (source_id, nama_museum, deskripsi, latitude, longitude, provinsi_id, kabupaten_id, kategori_id)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    INSERT INTO museum (source_id, nama_museum, deskripsi, harga_tiket, kepengurusan, website_url, latitude, longitude, provinsi_id, kabupaten_id, kategori_id)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
     RETURNING *
   `;
-  const params = [finalSourceId, nama_museum, deskripsi || null, latitude, longitude, provinsi_id, kabupaten_id, kategori_id || null];
+  const params = [finalSourceId, nama_museum, deskripsi || null, harga_tiket || null, kepengurusan || null, website_url || null, latitude, longitude, provinsi_id, kabupaten_id, kategori_id || null];
   const result = await query(sql, params);
   return result.rows[0];
 };
@@ -202,15 +202,15 @@ const createMuseum = async ({ source_id, nama_museum, deskripsi, latitude, longi
 /**
  * Update museum
  */
-const updateMuseum = async (id, { nama_museum, deskripsi, latitude, longitude, provinsi_id, kabupaten_id, kategori_id }) => {
+const updateMuseum = async (id, { nama_museum, deskripsi, harga_tiket, kepengurusan, website_url, latitude, longitude, provinsi_id, kabupaten_id, kategori_id }) => {
   const sql = `
     UPDATE museum
-    SET nama_museum = $1, deskripsi = $2, latitude = $3, longitude = $4,
-        provinsi_id = $5, kabupaten_id = $6, kategori_id = $7
-    WHERE id = $8
+    SET nama_museum = $1, deskripsi = $2, harga_tiket = $3, kepengurusan = $4, website_url = $5, latitude = $6, longitude = $7,
+        provinsi_id = $8, kabupaten_id = $9, kategori_id = $10
+    WHERE id = $11
     RETURNING *
   `;
-  const params = [nama_museum, deskripsi || null, latitude, longitude, provinsi_id, kabupaten_id, kategori_id || null, id];
+  const params = [nama_museum, deskripsi || null, harga_tiket || null, kepengurusan || null, website_url || null, latitude, longitude, provinsi_id, kabupaten_id, kategori_id || null, id];
   const result = await query(sql, params);
   return result.rows[0] || null;
 };

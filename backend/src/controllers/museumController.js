@@ -1,4 +1,5 @@
 const museumService = require('../services/museumService');
+const adminService = require('../services/adminService');
 const { successResponse, errorResponse } = require('../utils/responseFormatter');
 const { validatePagination, validateNearbyParams } = require('../utils/validator');
 
@@ -92,8 +93,61 @@ const getNearbyMuseums = async (req, res, next) => {
   }
 };
 
+/**
+ * GET /api/museums/stats
+ */
+const getStats = async (req, res, next) => {
+  try {
+    const stats = await adminService.getDashboardStats(req.query);
+    return successResponse(res, 'Statistik museum berhasil diambil', stats);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * GET /api/museums/stats/by-province
+ */
+const getByProvince = async (req, res, next) => {
+  try {
+    const data = await adminService.getMuseumsByProvince(req.query);
+    return successResponse(res, 'Data chart provinsi berhasil diambil', data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * GET /api/museums/stats/by-category
+ */
+const getByCategory = async (req, res, next) => {
+  try {
+    const data = await adminService.getMuseumsByCategory(req.query);
+    return successResponse(res, 'Data chart kategori berhasil diambil', data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * GET /api/museums/stats/top-regencies
+ */
+const getTopRegencies = async (req, res, next) => {
+  try {
+    const { limit } = req.query;
+    const data = await adminService.getTopRegencies(req.query, parseInt(limit) || 15);
+    return successResponse(res, 'Data chart top kabupaten berhasil diambil', data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getMuseums,
   getMuseumById,
   getNearbyMuseums,
+  getStats,
+  getByProvince,
+  getByCategory,
+  getTopRegencies,
 };

@@ -1,28 +1,30 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Map, Filter, Navigation, Compass, MapPin } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const AboutPlatform = () => {
+  const { t } = useLanguage();
   const features = [
     {
       icon: <Filter className="w-6 h-6" />,
-      title: "Smart Filtering",
-      description: "Easily search by province, regency, or museum category."
+      title: t('feat_smart_filter'),
+      description: t('feat_smart_filter_desc')
     },
     {
       icon: <Navigation className="w-6 h-6" />,
-      title: "Location Based",
-      description: "Find the nearest museums based on your current location instantly."
+      title: t('feat_loc_based'),
+      description: t('feat_loc_based_desc')
     },
     {
       icon: <Map className="w-6 h-6" />,
-      title: "Interactive Maps",
-      description: "Visual exploration of museum distributions across Indonesia."
+      title: t('feat_interactive'),
+      description: t('feat_interactive_desc')
     },
     {
       icon: <Compass className="w-6 h-6" />,
-      title: "Detailed Guides",
-      description: "Get ticket prices, opening hours, and collection highlights."
+      title: t('feat_guides'),
+      description: t('feat_guides_desc')
     }
   ];
 
@@ -39,15 +41,15 @@ const AboutPlatform = () => {
             transition={{ duration: 0.6 }}
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel mb-6 bg-indigo-50 dark:bg-indigo-900/30">
-              <span className="text-indigo-600 dark:text-indigo-400 font-bold text-xs uppercase tracking-widest">Platform Vision</span>
+              <span className="text-indigo-600 dark:text-indigo-400 font-bold text-xs uppercase tracking-widest">{t('platform_tag')}</span>
             </div>
             
             <h2 className="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6 leading-tight">
-              A New Way to Discover <br/> <span className="museum-gradient-text">Our Heritage</span>
+              {t('platform_title')} <br/> <span className="museum-gradient-text">{t('platform_title_accent')}</span>
             </h2>
             
             <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
-              We are building the most comprehensive platform to map and explore museum distributions in Indonesia. While currently an informational hub, upcoming features will transform how you plan your cultural journeys.
+              {t('platform_desc')}
             </p>
 
             <div className="grid sm:grid-cols-2 gap-6">

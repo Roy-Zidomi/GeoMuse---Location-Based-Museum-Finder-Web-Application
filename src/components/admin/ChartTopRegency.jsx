@@ -1,7 +1,8 @@
-import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useLanguage } from '../../context/LanguageContext';
 
 const ChartTopRegency = ({ data = [], loading = false }) => {
+  const { t } = useLanguage();
   if (loading) {
     return (
       <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
@@ -13,8 +14,8 @@ const ChartTopRegency = ({ data = [], loading = false }) => {
 
   return (
     <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
-      <h3 className="text-sm font-bold text-slate-800 dark:text-white mb-1">Top Kabupaten/Kota</h3>
-      <p className="text-xs text-slate-400 mb-4">Kabupaten dengan jumlah museum terbanyak</p>
+      <h3 className="text-sm font-bold text-slate-800 dark:text-white mb-1">{t('chart_regency_title')}</h3>
+      <p className="text-xs text-slate-400 mb-4">{t('chart_regency_desc')}</p>
       <div className="h-72">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} layout="vertical" margin={{ top: 5, right: 20, left: 5, bottom: 5 }}>

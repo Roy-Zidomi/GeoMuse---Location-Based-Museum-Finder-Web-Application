@@ -12,6 +12,7 @@ import ChartCategory from '../components/admin/ChartCategory';
 import ChartTopRegency from '../components/admin/ChartTopRegency';
 import MuseumTable from '../components/admin/MuseumTable';
 import MuseumForm from '../components/admin/MuseumForm';
+import InteractionTable from '../components/admin/InteractionTable';
 import { Menu } from 'lucide-react';
 
 const DashboardPage = () => {
@@ -208,6 +209,8 @@ const DashboardPage = () => {
             onDelete={handleDeleteMuseum}
           />
         );
+      case 'interactions':
+        return <InteractionTable />;
       case 'add':
         return <MuseumForm onSubmit={handleCreateMuseum} loading={formLoading} />;
       case 'edit':
@@ -224,10 +227,17 @@ const DashboardPage = () => {
     }
   };
 
-  const menuTitles = { dashboard: 'Dashboard', museums: 'Kelola Museum', add: 'Tambah Museum', edit: 'Edit Museum' };
+  const menuTitles = { 
+    dashboard: 'Dashboard', 
+    museums: 'Kelola Museum', 
+    interactions: 'Kelola Komentar & Foto',
+    add: 'Tambah Museum', 
+    edit: 'Edit Museum' 
+  };
   const menuDescriptions = {
     dashboard: 'Ringkasan performa platform museum.',
     museums: 'Kelola, cari, dan perbarui data museum dengan cepat.',
+    interactions: 'Pantau dan moderasi interaksi dari pengunjung museum.',
     add: 'Tambahkan data museum baru ke dalam sistem.',
     edit: 'Perbarui informasi museum yang sudah terdaftar.',
   };

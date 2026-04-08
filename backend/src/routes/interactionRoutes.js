@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const interactionController = require('../controllers/interactionController');
+const { verifyUserToken } = require('../middleware/authMiddleware');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -24,8 +25,8 @@ const upload = multer({ storage: storage });
 
 // Unified Interactions
 router.get('/museums/:museum_id', interactionController.getMuseumInteractions);
-router.post('/reviews', interactionController.postReview);
-router.post('/photos', upload.single('photo'), interactionController.postPhoto);
+router.post('/reviews', verifyUserToken, interactionController.postReview);
+router.post('/photos', verifyUserToken, upload.single('photo'), interactionController.postPhoto);
 router.post('/:id/react', interactionController.reactInteraction);
 
 module.exports = router;

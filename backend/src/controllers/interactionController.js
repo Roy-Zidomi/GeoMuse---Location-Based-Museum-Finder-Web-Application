@@ -6,13 +6,17 @@ const interactionService = require('../services/interactionService');
  */
 const postReview = async (req, res, next) => {
   try {
-    const { museum_id, user_name, rating, comment } = req.body;
-    if (!museum_id || !user_name || !rating) {
-      return errorResponse(res, 400, 'museum_id, user_name, dan rating wajib diisi');
+    const { museum_id, rating, comment } = req.body;
+    const user_name = req.user.name;
+    const user_id = req.user.id;
+
+    if (!museum_id || !rating) {
+      return errorResponse(res, 400, 'museum_id dan rating wajib diisi');
     }
 
     const review = await interactionService.addInteraction({ 
       museum_id, 
+      user_id,
       user_name, 
       type: 'REVIEW', 
       rating, 
@@ -29,7 +33,10 @@ const postReview = async (req, res, next) => {
  */
 const postPhoto = async (req, res, next) => {
   try {
-    const { museum_id, user_name, comment } = req.body;
+    const { museum_id, comment } = req.body;
+    const user_name = req.user.name;
+    const user_id = req.user.id;
+
     if (!req.file) {
       return errorResponse(res, 400, 'Harap lampirkan file foto');
     }
@@ -37,6 +44,7 @@ const postPhoto = async (req, res, next) => {
     const photo_url = `/uploads/${req.file.filename}`;
     const photo = await interactionService.addInteraction({ 
       museum_id, 
+      user_id,
       user_name, 
       type: 'PHOTO', 
       photo_url,

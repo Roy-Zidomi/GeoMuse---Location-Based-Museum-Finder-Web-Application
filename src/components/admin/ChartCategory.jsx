@@ -1,5 +1,5 @@
-import React from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { useLanguage } from '../../context/LanguageContext';
 
 const MUTED_COLORS = [
   '#2DD4BF',
@@ -15,6 +15,7 @@ const MUTED_COLORS = [
 ];
 
 const ChartCategory = ({ data = [], loading = false }) => {
+  const { t } = useLanguage();
   if (loading) {
     return (
       <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
@@ -39,8 +40,8 @@ const ChartCategory = ({ data = [], loading = false }) => {
 
   return (
     <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
-      <h3 className="text-sm font-bold text-slate-800 dark:text-white mb-1">Museum per Kategori</h3>
-      <p className="text-xs text-slate-400 mb-4">Distribusi museum berdasarkan jenis kategori</p>
+      <h3 className="text-sm font-bold text-slate-800 dark:text-white mb-1">{t('chart_category_title')}</h3>
+      <p className="text-xs text-slate-400 mb-4">{t('chart_category_desc')}</p>
       <div className="h-72">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
@@ -66,11 +67,11 @@ const ChartCategory = ({ data = [], loading = false }) => {
                 borderRadius: '12px', boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
               }}
               labelStyle={{ color: '#f8fafc', fontWeight: 'bold', fontSize: 12 }}
-              formatter={(value, name) => [`${value} museum`, name]}
+              formatter={(value, name) => [`${value} museum`, t(name)]}
             />
             <Legend
               wrapperStyle={{ fontSize: '11px' }}
-              formatter={(value) => <span className="text-slate-400">{value}</span>}
+              formatter={(value) => <span className="text-slate-400">{t(value)}</span>}
             />
           </PieChart>
         </ResponsiveContainer>

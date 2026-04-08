@@ -19,4 +19,8 @@ router.post('/museums', verifyToken, adminController.createMuseum);
 router.put('/museums/:id', verifyToken, adminController.updateMuseum);
 router.delete('/museums/:id', verifyToken, adminController.deleteMuseum);
 
+// Interactions (perlu token)
+router.get('/interactions', verifyToken, adminController.getInteractions);
+router.delete('/interactions/:id', verifyToken, adminController.deleteInteraction);
+
 module.exports = router;

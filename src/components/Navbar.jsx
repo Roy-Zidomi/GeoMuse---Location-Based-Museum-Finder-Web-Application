@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
-import { Moon, Sun, Menu, X, Landmark, Map } from 'lucide-react';
+import { Moon, Sun, Menu, X, Landmark, Map, Languages, User, LogOut, UserCircle, LogIn } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
+  const { lang, t, toggleLanguage } = useLanguage();
+  const { user, isUserAuthenticated, userLogout } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
@@ -37,12 +41,12 @@ const Navbar = () => {
   }, [isMobileMenuOpen]);
 
   const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#what-is-museum' },
-    { name: 'Types', href: '#types' },
-    { name: 'Benefits', href: '#benefits' },
-    { name: 'Featured', href: '#featured' },
-    { name: 'FAQ', href: '#faq' },
+    { name: t('home'), id:'home', href: '#home' },
+    { name: t('about'), id:'about', href: '#what-is-museum' },
+    { name: t('types'), id:'types', href: '#types' },
+    { name: t('benefits'), id:'benefits', href: '#benefits' },
+    { name: t('featured'), id:'featured', href: '#featured' },
+    { name: t('faq'), id:'faq', href: '#faq' },
   ];
 
   return (
@@ -72,7 +76,7 @@ const Navbar = () => {
             <div className="hidden md:flex items-center space-x-1 lg:space-x-4">
               {navLinks.map((link) => (
                 <a
-                  key={link.name}
+                  key={link.id}
                   href={isLandingPage ? link.href : `/${link.href}`}
                   className="text-sm font-medium text-slate-600 hover:text-emerald-600 dark:text-slate-300 dark:hover:text-emerald-400 px-3 py-2 rounded-lg transition-colors"
                 >
@@ -83,6 +87,14 @@ const Navbar = () => {
 
             {/* Right side actions */}
             <div className="flex items-center gap-4">
+              <button
+                onClick={toggleLanguage}
+                className="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors text-slate-600 dark:text-slate-300"
+                aria-label="Toggle language"
+              >
+                <Languages size={18} />
+                <span className="text-xs font-bold uppercase">{lang}</span>
+              </button>
               <button
                 onClick={toggleTheme}
                 className="hidden md:flex p-2 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors text-slate-600 dark:text-slate-300"
@@ -95,8 +107,44 @@ const Navbar = () => {
                 className="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-emerald-500 to-indigo-500 hover:from-emerald-600 hover:to-indigo-600 text-white text-sm font-medium shadow-lg shadow-emerald-500/25 transition-all hover:shadow-emerald-500/40 hover:-translate-y-0.5"
               >
                 <Map size={16} />
-                Explore Map
+                {t('explore_map')}
               </Link>
+
+              {/* User Account */}
+              <div className="hidden md:flex items-center gap-2 border-l border-slate-200 dark:border-slate-700 pl-4 ml-1">
+                {isUserAuthenticated ? (
+                  <div className="flex items-center gap-3">
+                    <div className="flex flex-col items-end">
+                      <span className="text-xs font-bold text-slate-800 dark:text-white line-clamp-1 max-w-[100px]">{user?.name}</span>
+                      <button 
+                        onClick={userLogout}
+                        className="text-[10px] font-bold text-red-500 hover:text-red-600 uppercase tracking-tighter"
+                      >
+                        {t('logout')}
+                      </button>
+                    </div>
+                    <div className="w-9 h-9 rounded-full bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                      <User size={18} />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <Link 
+                      to="/login"
+                      className="text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-emerald-500 transition-colors uppercase tracking-wider"
+                    >
+                      {t('login')}
+                    </Link>
+                    <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700" />
+                    <Link 
+                      to="/register"
+                      className="text-xs font-bold text-emerald-500 hover:text-emerald-600 transition-colors uppercase tracking-wider"
+                    >
+                      {t('register')}
+                    </Link>
+                  </div>
+                )}
+              </div>
 
               {/* Mobile Menu Button */}
               <button
@@ -141,7 +189,7 @@ const Navbar = () => {
                 <div className="px-4 py-4 space-y-2 flex-1 overflow-y-auto">
                   {navLinks.map((link) => (
                     <a
-                      key={link.name}
+                      key={link.id}
                       href={isLandingPage ? link.href : `/${link.href}`}
                       className="block px-4 py-3 text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
                       onClick={() => setIsMobileMenuOpen(false)}
@@ -152,21 +200,72 @@ const Navbar = () => {
                 </div>
 
                 <div className="px-4 py-4 border-t border-slate-200 dark:border-slate-800 space-y-3">
-                  <button
-                    onClick={toggleTheme}
-                    className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium transition-colors"
-                  >
-                    {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-                    {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
-                  </button>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={toggleLanguage}
+                      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium transition-colors"
+                    >
+                      <Languages size={18} />
+                      {lang === 'id' ? 'Indonesia' : 'English'}
+                    </button>
+                    <button
+                      onClick={toggleTheme}
+                      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium transition-colors"
+                    >
+                      {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                    </button>
+                  </div>
                   <Link
                     to="/map"
                     className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-indigo-500 text-white font-medium shadow-md"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <Map size={16} />
-                    Explore Map
+                    {t('explore_map')}
                   </Link>
+
+                  {/* Mobile User Section */}
+                  <div className="pt-2">
+                    {isUserAuthenticated ? (
+                      <div className="bg-slate-50 dark:bg-slate-800/40 rounded-2xl p-4 border border-slate-100 dark:border-slate-800">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500">
+                            <UserCircle size={24} />
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-sm font-bold text-slate-800 dark:text-white">{user?.name}</span>
+                            <span className="text-xs text-slate-500">{user?.email}</span>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => { userLogout(); setIsMobileMenuOpen(false); }}
+                          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-red-50 text-red-600 text-sm font-bold hover:bg-red-100 transition-colors"
+                        >
+                          <LogOut size={16} />
+                          {t('logout')}
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col gap-2">
+                        <Link
+                          to="/login"
+                          className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 font-bold text-sm"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          <LogIn size={16} />
+                          {t('login')}
+                        </Link>
+                        <Link
+                          to="/register"
+                          className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-500 text-white font-bold text-sm"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          <UserCircle size={16} />
+                          {t('register')}
+                        </Link>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </MotionAside>
             </MotionDiv>

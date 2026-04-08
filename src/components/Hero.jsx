@@ -3,10 +3,12 @@ import { motion } from 'framer-motion';
 import { MapPin, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import nationalMuseumImg from '../assets/museumAgungRai.jpg';
+import { useLanguage } from '../context/LanguageContext';
 
 
 const Hero = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const handleStartExplore = () => {
     navigate('/map');
@@ -34,8 +36,8 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-5xl lg:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.1]"
           >
-            Explore Indonesia&apos;s{' '}
-            <span className="museum-gradient-text">Museums</span>
+            {t('hero_title')}{' '}
+            <span className="museum-gradient-text">{t('hero_title_accent')}</span>
           </motion.h1>
 
           <motion.p
@@ -44,7 +46,7 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
           >
-            Your ultimate platform for mapping and discovering museum distributions across the archipelago. Filter by province, category, and find the nearest cultural treasures.
+            {t('hero_subtitle')}
           </motion.p>
 
           <motion.div
@@ -58,7 +60,7 @@ const Hero = () => {
               onClick={handleStartExplore}
               className="px-8 py-4 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-semibold hover:-translate-y-1 transition-transform shadow-xl shadow-slate-900/20 dark:shadow-white/10 flex items-center justify-center gap-2 group"
             >
-              Start Exploring
+              {t('start_exploring')}
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
             <button
@@ -67,7 +69,7 @@ const Hero = () => {
               className="px-8 py-4 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-semibold border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 hover:-translate-y-1 transition-all flex items-center justify-center gap-2"
             >
               <MapPin className="w-5 h-5 text-emerald-500" />
-              Find Near Me
+              {t('find_near_me')}
             </button>
           </motion.div>
         </div>

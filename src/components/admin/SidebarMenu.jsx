@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import {
   LayoutDashboard, Building2, PlusCircle, LogOut, Landmark,
-  ChevronDown, Sun, Moon
+  ChevronDown, Sun, Moon, MessageSquare
 } from 'lucide-react';
 
 const SidebarMenu = ({
@@ -12,17 +12,18 @@ const SidebarMenu = ({
   provinces, regencies, categories,
   filters, onFilterChange, onResetFilters,
 }) => {
-  const { logout } = useAuth();
+  const { adminLogout } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
   const menuItems = [
     { key: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { key: 'museums', label: 'Kelola Museum', icon: Building2 },
+    { key: 'interactions', label: 'Komentar & Foto', icon: MessageSquare },
     { key: 'add', label: 'Tambah Museum', icon: PlusCircle },
   ];
 
   const handleLogout = () => {
-    logout();
+    adminLogout();
   };
 
   return (

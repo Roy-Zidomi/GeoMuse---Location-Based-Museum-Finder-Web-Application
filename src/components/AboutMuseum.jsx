@@ -2,28 +2,30 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { History, BookOpen, Globe, Shapes } from 'lucide-react';
 import museumPasifikaImage from '../assets/museumPasifika.jpg';
+import { useLanguage } from '../context/LanguageContext';
 
 const AboutMuseum = () => {
+  const { t } = useLanguage();
   const features = [
     {
       icon: <History className="w-6 h-6" />,
-      title: "Preserving History",
-      description: "Safeguarding invaluable artifacts and telling stories of civilizations past."
+      title: t('preserving_history'),
+      description: t('preserving_history_desc')
     },
     {
       icon: <BookOpen className="w-6 h-6" />,
-      title: "Educational Spaces",
-      description: "Interactive environments where learning comes alive beyond the classroom."
+      title: t('educational_spaces'),
+      description: t('educational_spaces_desc')
     },
     {
       icon: <Globe className="w-6 h-6" />,
-      title: "Cultural Identity",
-      description: "Connecting present generations with their ancestral roots and diverse heritage."
+      title: t('cultural_identity'),
+      description: t('cultural_identity_desc')
     },
     {
       icon: <Shapes className="w-6 h-6" />,
-      title: "Art & Science",
-      description: "Showcasing human creativity, innovation, and our understanding of the universe."
+      title: t('art_science'),
+      description: t('art_science_desc')
     }
   ];
 
@@ -42,15 +44,15 @@ const AboutMuseum = () => {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100/50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 font-medium text-sm">
               <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              The Foundation
+              {t('foundation_tag')}
             </div>
 
             <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white leading-tight">
-              What is a <span className="text-emerald-600 dark:text-emerald-400">Museum</span>?
+              {t('what_is_museum')}<span className="text-emerald-600 dark:text-emerald-400">{t('museum_accent')}</span>?
             </h2>
 
             <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
-              A museum goes beyond simply being a building filled with ancient objects. It is a living, breathing institution that preserves our collective memory, safeguards our cultural heritage, and inspires future generations through human discovery.
+              {t('museum_desc')}
             </p>
 
             <div className="pt-8 grid sm:grid-cols-2 gap-6">
@@ -97,7 +99,7 @@ const AboutMuseum = () => {
               <div className="absolute bottom-0 left-0 right-0 p-8">
                 <div className="glass-panel rounded-2xl p-6 bg-white/10 dark:bg-black/30 backdrop-blur-md">
                   <p className="text-white font-medium text-lg italic">
-                    "Museums are managers of consciousness. They give us an interpretation of history, of how to view the world and locate ourselves in it."
+                    {t('museum_quote')}
                   </p>
                   <p className="text-emerald-300 font-semibold mt-4 text-sm uppercase tracking-wider">
                     - Hans Haacke

@@ -4,17 +4,19 @@ import MarkerClusterGroup from 'react-leaflet-cluster';
 import { Link } from 'react-router-dom';
 import { createCategoryIcon, userLocationIcon } from './CategoryMarker';
 import MapController from './MapController';
+import { useLanguage } from '../../context/LanguageContext';
 import { MapPin, Tag, Building2, Globe, Navigation } from 'lucide-react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-const MapView = ({ 
-  museums = [], 
-  userLocation = null, 
-  nearbyRadius = null, 
+const MapView = ({
+  museums = [],
+  userLocation = null,
+  nearbyRadius = null,
   sidebarOpen = true,
-  onMuseumSelect 
+  onMuseumSelect
 }) => {
+  const { t } = useLanguage();
   // Memoize markers to avoid re-creating icons on every render
   const markers = useMemo(() => {
     return museums
@@ -41,10 +43,10 @@ const MapView = ({
       />
 
       {/* Auto-zoom controller */}
-      <MapController 
-        museums={museums} 
-        userLocation={userLocation} 
-        sidebarOpen={sidebarOpen} 
+      <MapController
+        museums={museums}
+        userLocation={userLocation}
+        sidebarOpen={sidebarOpen}
       />
 
       {/* Museum markers with clustering */}
@@ -89,7 +91,35 @@ const MapView = ({
               click: () => onMuseumSelect(museum),
             }}
           >
-            {/* Popup removed to directly show detail on sidebar */}
+            <Popup className="museum-popup">
+              <div className="flex flex-col w-48 overflow-hidden rounded-lg">
+                <div className="h-32 bg-slate-200 dark:bg-slate-800 relative">
+                  {museum.foto_utama ? (
+                    <img 
+                      src={`http://localhost:5000${museum.foto_utama}`} 
+                      alt={museum.nama_museum} 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                      <Building2 size={32} strokeWidth={1} />
+                    </div>
+                  )}
+                  <div className="absolute top-2 right-2 px-2 py-1 rounded bg-white/90 backdrop-blur-sm text-[10px] font-bold text-emerald-600 shadow-sm">
+                    {t(museum.nama_kategori || 'Museum')}
+                  </div>
+                </div>
+                <div className="bg-white dark:bg-slate-900 px-3 py-2 border-t border-slate-100 dark:border-slate-800">
+                  <h3 className="font-bold text-sm text-slate-800 dark:text-white line-clamp-2 leading-snug">
+                    {museum.nama_museum}
+                  </h3>
+                  <div className="mt-1 flex items-center gap-1 text-[10px] text-slate-500 font-medium">
+                    <MapPin size={10} className="text-emerald-500" />
+                    <span className="truncate">{museum.nama_kabupaten}</span>
+                  </div>
+                </div>
+              </div>
+            </Popup>
           </Marker>
         ))}
       </MarkerClusterGroup>
@@ -99,7 +129,7 @@ const MapView = ({
         <Marker position={[userLocation.lat, userLocation.lng]} icon={userLocationIcon}>
           <Popup>
             <div className="text-center p-1">
-              <p className="font-semibold text-sm text-slate-900">📍 Lokasi Anda</p>
+              <p className="font-semibold text-sm text-slate-900">{t('your_location')}</p>
               <p className="text-xs text-slate-500 mt-1">
                 {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
               </p>

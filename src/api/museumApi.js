@@ -11,6 +11,15 @@ const api = axios.create({
   },
 });
 
+// Interceptor: sisipkan token user ke setiap request jika ada
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('user_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 /**
  * Ambil semua museum dengan filter, search, dan pagination
  */
@@ -84,6 +93,29 @@ export const postMuseumPhoto = async (formData) => {
 
 export const reactToInteraction = async (interactionId, type) => {
   const { data } = await api.post(`/interactions/${interactionId}/react`, { type });
+  return data;
+};
+
+/**
+ * Dashboard & Statistics (Public)
+ */
+export const getPublicStats = async (filters = {}) => {
+  const { data } = await api.get('/museums/stats', { params: filters });
+  return data;
+};
+
+export const getPublicByProvince = async (filters = {}) => {
+  const { data } = await api.get('/museums/stats/by-province', { params: filters });
+  return data;
+};
+
+export const getPublicByCategory = async (filters = {}) => {
+  const { data } = await api.get('/museums/stats/by-category', { params: filters });
+  return data;
+};
+
+export const getPublicTopRegencies = async (filters = {}) => {
+  const { data } = await api.get('/museums/stats/top-regencies', { params: filters });
   return data;
 };
 

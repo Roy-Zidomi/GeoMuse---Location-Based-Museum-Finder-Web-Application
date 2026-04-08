@@ -2,38 +2,40 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { MapPin, ArrowRight } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 import museumNasionalImage from '../assets/museumNasional.jpg';
 import museumAngkutImage from '../assets/museumAngkut.jpg';
 import museumTsunamiImage from '../assets/museumTsunami.jpg';
 import museumUllenSentaluImage from '../assets/museumUllen-Sentalu.jpg';
 
 const FeaturedMuseums = () => {
+  const { t } = useLanguage();
   const featured = [
     {
-      name: "National Museum of Indonesia",
-      location: "Jakarta Pusat",
-      description: "Affectionately known as the Elephant Building, housing over 140,000 prehistoric and historical artifacts.",
+      name: t('fm_1_name'),
+      location: t('fm_1_loc'),
+      description: t('fm_1_desc'),
       image: museumNasionalImage,
       link: "https://www.museumnasional.or.id/"
     },
     {
-      name: "Museum Angkut",
-      location: "Kota Batu, Jawa Timur",
-      description: "Southeast Asia's first modern transportation museum, featuring classic cars and thematic zones.",
+      name: t('fm_2_name'),
+      location: t('fm_2_loc'),
+      description: t('fm_2_desc'),
       image: museumAngkutImage,
       link: "https://jtp.id/museumangkut/"
     },
     {
-      name: "Aceh Tsunami Museum",
-      location: "Banda Aceh",
-      description: "A poignant architectural masterwork commemorating the 2004 tsunami disaster and honoring its victims.",
+      name: t('fm_3_name'),
+      location: t('fm_3_loc'),
+      description: t('fm_3_desc'),
       image: museumTsunamiImage,
       link: "https://museumtsunami.acehprov.go.id/"
     },
     {
-      name: "Ullen Sentalu Museum",
-      location: "Yogyakarta",
-      description: "An intimate glimpse into the art and culture of the Mataram dynasty within a beautiful forest setting.",
+      name: t('fm_4_name'),
+      location: t('fm_4_loc'),
+      description: t('fm_4_desc'),
       image: museumUllenSentaluImage,
       link: "https://www.ullensentalu.com/"
     }
@@ -46,17 +48,17 @@ const FeaturedMuseums = () => {
         <div className="flex justify-between items-end mb-16">
           <div className="max-w-2xl">
             <h2 className="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">
-              Featured Museums
+              {t('featured_title')}
             </h2>
             <p className="text-lg text-slate-600 dark:text-slate-400">
-              A curated selection of the most iconic and frequently visited cultural landmarks across the nation.
+              {t('featured_subtitle')}
             </p>
           </div>
           <Link
             to="/map"
             className="hidden md:flex items-center gap-2 px-6 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white font-medium hover:scale-105 transition-transform shadow-sm"
           >
-            View Map
+            {t('view_map')}
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -79,7 +81,7 @@ const FeaturedMuseums = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
                 <div className="absolute top-4 left-4">
                   <span className="glass-panel px-3 py-1 rounded-full text-xs font-semibold text-white bg-black/30">
-                    Must Visit
+                    {t('must_visit')}
                   </span>
                 </div>
               </div>
@@ -102,12 +104,12 @@ const FeaturedMuseums = () => {
                     rel="noopener noreferrer"
                     className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-800/80 flex justify-between items-center text-sm font-semibold text-indigo-600 dark:text-indigo-400 group-hover:text-indigo-500 transition-colors"
                   >
-                    Learn more
+                    {t('learn_more')}
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </a>
                 ) : (
                   <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-800/80 flex justify-between items-center text-sm font-semibold text-indigo-600 dark:text-indigo-400 group-hover:text-indigo-500 transition-colors">
-                    Learn more
+                    {t('learn_more')}
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </div>
                 )}
@@ -120,7 +122,7 @@ const FeaturedMuseums = () => {
           to="/map"
           className="mt-12 w-full md:hidden flex justify-center items-center gap-2 px-6 py-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white font-medium shadow-sm"
         >
-          View Map
+          {t('view_map')}
           <ArrowRight className="w-4 h-4" />
         </Link>
 

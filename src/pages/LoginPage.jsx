@@ -6,7 +6,7 @@ import { Landmark, Eye, EyeOff, LogIn, AlertCircle } from 'lucide-react';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { adminLogin } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +25,7 @@ const LoginPage = () => {
     setLoading(true);
     try {
       const res = await loginAdmin(email, password);
-      login(res.data.token, res.data.admin);
+      adminLogin(res.data.token, res.data.user);
       navigate('/admin/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Login gagal. Periksa kredensial Anda.');

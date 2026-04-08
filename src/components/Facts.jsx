@@ -1,26 +1,28 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Lightbulb, Users, GlobeX } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const Facts = () => {
+  const { t } = useLanguage();
   const stats = [
     {
       icon: <Lightbulb className="w-8 h-8" />,
-      value: "600+",
-      label: "Museums in Indonesia",
-      description: "Scattered across the archipelago, preserving local and national histories."
+      value: t('fact_1_val'),
+      label: t('fact_1_label'),
+      description: t('fact_1_desc')
     },
     {
       icon: <Users className="w-8 h-8" />,
-      value: "Millions",
-      label: "Annual Visitors",
-      description: "Domestic and international tourists enriching their minds."
+      value: t('fact_2_val'),
+      label: t('fact_2_label'),
+      description: t('fact_2_desc')
     },
     {
       icon: <GlobeX className="w-8 h-8" />,
-      value: "7+",
-      label: "Diverse Categories",
-      description: "From maritime to aviation, fine arts to natural history."
+      value: t('fact_3_val'),
+      label: t('fact_3_label'),
+      description: t('fact_3_desc')
     }
   ];
 
@@ -42,7 +44,7 @@ const Facts = () => {
             viewport={{ once: true }}
             className="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6 leading-tight"
           >
-            Did You Know?
+            {t('facts_title')}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -51,7 +53,7 @@ const Facts = () => {
             transition={{ delay: 0.1 }}
             className="text-slate-600 dark:text-slate-300 text-lg"
           >
-            Museums hold incredible stories and facts that shape our understanding of the world. Here are just a few glimpses into Indonesia's museum landscape.
+            {t('facts_subtitle')}
           </motion.p>
         </div>
 

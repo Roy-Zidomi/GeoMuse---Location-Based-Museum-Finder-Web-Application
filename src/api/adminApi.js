@@ -78,4 +78,15 @@ export const deleteMuseum = async (id) => {
   return data;
 };
 
+// Interaction Management
+export const getAdminInteractions = async (params = {}) => {
+  const { data } = await adminApi.get('/interactions', { params });
+  return data;
+};
+
+export const deleteAdminInteraction = async (id) => {
+  const { data } = await adminApi.delete(`/interactions/${id}`);
+  return data;
+};
+
 export default adminApi;

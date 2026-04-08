@@ -1,14 +1,17 @@
 import React from 'react';
+import { useLanguage } from '../../context/LanguageContext';
 
-const cards = [
-  { key: 'total_museum', label: 'Total Museum', accent: '#2DD4BF' },
-  { key: 'total_provinsi', label: 'Total Provinsi', accent: '#60A5FA' },
-  { key: 'total_kabupaten', label: 'Total Kabupaten', accent: '#818CF8' },
-  { key: 'total_kategori', label: 'Total Kategori', accent: '#A78BFA' },
-  { key: 'museum_tanpa_kategori', label: 'Tanpa Kategori', accent: '#38BDF8' },
+const getCardConfig = (t) => [
+  { key: 'total_museum', label: t('total_museum_label'), accent: '#2DD4BF' },
+  { key: 'total_provinsi', label: t('total_province_label'), accent: '#60A5FA' },
+  { key: 'total_kabupaten', label: t('total_regency_label'), accent: '#818CF8' },
+  { key: 'total_kategori', label: t('total_category_label'), accent: '#A78BFA' },
+  { key: 'museum_tanpa_kategori', label: t('no_category_label'), accent: '#38BDF8' },
 ];
 
 const StatCards = ({ stats = {}, loading = false }) => {
+  const { t } = useLanguage();
+  const cards = getCardConfig(t);
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
       {cards.map(({ key, label, accent }) => (

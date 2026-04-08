@@ -6,10 +6,12 @@ import FilterPanel from '../components/map/FilterPanel';
 import MuseumDetailPanel from '../components/map/MuseumDetailPanel';
 import LoadingOverlay from '../components/map/LoadingOverlay';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Landmark, Moon, Sun, ArrowLeft, Menu, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Landmark, Moon, Sun, ArrowLeft, Menu, X, ChevronLeft, ChevronRight, Languages } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const MapPage = () => {
   const { theme, toggleTheme } = useTheme();
+  const { lang, t, toggleLanguage } = useLanguage();
   const [searchParams, setSearchParams] = useSearchParams();
   const hasAutoTriggeredNearby = useRef(false);
 
@@ -92,7 +94,7 @@ const MapPage = () => {
       setMuseums(res.data || []);
       setTotalData(res.pagination?.total_data || res.data?.length || 0);
     } catch (err) {
-      setError('Gagal memuat data museum');
+      setError(t('err_load_museums'));
       console.error(err);
     } finally {
       setLoading(false);
@@ -106,7 +108,7 @@ const MapPage = () => {
   // Handle nearby search
   const handleNearby = useCallback(async () => {
     if (!navigator.geolocation) {
-      setError('Browser tidak mendukung geolokasi');
+      setError(t('err_geolocation_unsupported'));
       return;
     }
 
@@ -124,14 +126,14 @@ const MapPage = () => {
           setMuseums(res.data || []);
           setTotalData(res.data?.length || 0);
         } catch (err) {
-          setError('Gagal mencari museum terdekat');
+          setError(t('err_nearby_search'));
           console.error(err);
         } finally {
           setLoading(false);
         }
       },
       (err) => {
-        setError('Gagal mendapatkan lokasi. Pastikan izin lokasi diaktifkan.');
+        setError(t('err_get_location'));
         setLoading(false);
         console.error(err);
       },
@@ -228,8 +230,15 @@ const MapPage = () => {
           </Link>
 
         </div>
-
         <div className="flex items-center gap-2">
+          <button
+            onClick={toggleLanguage}
+            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors text-slate-600 dark:text-slate-300 flex items-center gap-1.5"
+          >
+            <Languages size={18} />
+            <span className="text-xs font-bold uppercase">{lang}</span>
+          </button>
+          
           <button
             onClick={toggleTheme}
             className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors text-slate-600 dark:text-slate-300"
@@ -242,7 +251,7 @@ const MapPage = () => {
             className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           >
             <ArrowLeft size={16} />
-            <span className="hidden sm:inline">Kembali</span>
+            <span className="hidden sm:inline">{t('back')}</span>
           </Link>
         </div>
       </header>
@@ -291,8 +300,8 @@ const MapPage = () => {
           onClick={() => setSidebarOpen((prev) => !prev)}
           className="hidden lg:flex absolute top-1/2 -translate-y-1/2 z-20 h-14 w-8 items-center justify-center rounded-r-xl border border-slate-200 bg-white/95 text-slate-700 shadow-lg backdrop-blur-sm transition-all duration-300 hover:bg-white dark:border-slate-700 dark:bg-slate-900/95 dark:text-slate-200 dark:hover:bg-slate-900"
           style={{ left: sidebarOpen ? 'calc(24rem - 0.75rem)' : '0.5rem' }}
-          aria-label={sidebarOpen ? 'Tutup sidebar filter' : 'Buka sidebar filter'}
-          title={sidebarOpen ? 'Tutup sidebar' : 'Buka sidebar'}
+          aria-label={sidebarOpen ? t('close_sidebar') : t('open_sidebar')}
+          title={sidebarOpen ? t('close_sidebar') : t('open_sidebar')}
         >
           {sidebarOpen ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
         </button>

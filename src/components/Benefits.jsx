@@ -2,33 +2,35 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ShieldCheck, GraduationCap, Map, Microscope, Fingerprint } from 'lucide-react';
 import museumAsiaAfrikaImage from '../assets/museumAsia-Afrikajpeg.jpeg';
+import { useLanguage } from '../context/LanguageContext';
 
 const Benefits = () => {
+  const { t } = useLanguage();
   const benefitsList = [
     {
       icon: <ShieldCheck className="w-5 h-5" />,
-      title: "Preserving Cultural Heritage",
-      description: "Safeguarding physical and intangible national treasures for the future."
+      title: t('benefit_heritage'),
+      description: t('benefit_heritage_desc')
     },
     {
       icon: <GraduationCap className="w-5 h-5" />,
-      title: "Educational Spaces",
-      description: "Providing interactive and immersive learning environments for students."
+      title: t('benefit_education'),
+      description: t('benefit_education_desc')
     },
     {
       icon: <Map className="w-5 h-5" />,
-      title: "Supporting Cultural Tourism",
-      description: "Boosting local economies by attracting domestic and international visitors."
+      title: t('benefit_tourism'),
+      description: t('benefit_tourism_desc')
     },
     {
       icon: <Microscope className="w-5 h-5" />,
-      title: "Sources for Research",
-      description: "Serving as vital repositories for historical, scientific, and artistic study."
+      title: t('benefit_research'),
+      description: t('benefit_research_desc')
     },
     {
       icon: <Fingerprint className="w-5 h-5" />,
-      title: "Introducing National Identity",
-      description: "Fostering a deep sense of belonging and pride in our Indonesian heritage."
+      title: t('benefit_identity'),
+      description: t('benefit_identity_desc')
     }
   ];
 
@@ -51,7 +53,7 @@ const Benefits = () => {
             transition={{ delay: 0.1 }}
             className="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6 leading-tight"
           >
-            Why Museums Matter
+            {t('benefits_title')}
           </motion.h2>
         </div>
 
@@ -114,8 +116,8 @@ const Benefits = () => {
                 <div className="w-12 h-12 rounded-full bg-indigo-500 flex items-center justify-center text-white mb-4 shadow-lg shadow-indigo-500/30">
                   <GraduationCap className="w-6 h-6" />
                 </div>
-                <h4 className="text-2xl font-bold text-white mb-2">A Bridge to Knowledge</h4>
-                <p className="text-slate-300 text-sm leading-relaxed">Museums serve as dynamic institutions connecting our history to the modern world's endless curiosity.</p>
+                <h4 className="text-2xl font-bold text-white mb-2">{t('bridge_to_knowledge')}</h4>
+                <p className="text-slate-300 text-sm leading-relaxed">{t('bridge_to_knowledge_desc')}</p>
               </div>
             </div>
           </motion.div>

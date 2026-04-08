@@ -1,5 +1,5 @@
-import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { useLanguage } from '../../context/LanguageContext';
 
 const MUTED_BAR_COLORS = [
   '#2DD4BF',
@@ -13,6 +13,7 @@ const MUTED_BAR_COLORS = [
 ];
 
 const ChartProvince = ({ data = [], loading = false }) => {
+  const { t } = useLanguage();
   if (loading) {
     return (
       <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
@@ -24,8 +25,8 @@ const ChartProvince = ({ data = [], loading = false }) => {
 
   return (
     <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
-      <h3 className="text-sm font-bold text-slate-800 dark:text-white mb-1">Museum per Provinsi</h3>
-      <p className="text-xs text-slate-400 mb-4">Distribusi jumlah museum berdasarkan provinsi</p>
+      <h3 className="text-sm font-bold text-slate-800 dark:text-white mb-1">{t('chart_province_title')}</h3>
+      <p className="text-xs text-slate-400 mb-4">{t('chart_province_desc')}</p>
       <div className="h-80">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} margin={{ top: 5, right: 10, left: -10, bottom: 60 }}>

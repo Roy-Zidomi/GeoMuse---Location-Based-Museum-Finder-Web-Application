@@ -1,4 +1,5 @@
 const adminService = require('../services/adminService');
+const interactionService = require('../services/interactionService');
 const { successResponse, errorResponse } = require('../utils/responseFormatter');
 
 /**
@@ -83,14 +84,14 @@ const getMuseums = async (req, res, next) => {
  */
 const createMuseum = async (req, res, next) => {
   try {
-    const { source_id, nama_museum, deskripsi, latitude, longitude, provinsi_id, kabupaten_id, kategori_id } = req.body;
+    const { source_id, nama_museum, deskripsi, harga_tiket, kepengurusan, website_url, latitude, longitude, provinsi_id, kabupaten_id, kategori_id } = req.body;
 
     if (!nama_museum || !latitude || !longitude || !provinsi_id || !kabupaten_id) {
       return errorResponse(res, 400, 'Field nama_museum, latitude, longitude, provinsi_id, dan kabupaten_id wajib diisi');
     }
 
     const museum = await adminService.createMuseum({
-      source_id, nama_museum, deskripsi, latitude, longitude, provinsi_id, kabupaten_id, kategori_id,
+      source_id, nama_museum, deskripsi, harga_tiket, kepengurusan, website_url, latitude, longitude, provinsi_id, kabupaten_id, kategori_id,
     });
 
     return successResponse(res, 'Museum berhasil ditambahkan', museum, 201);
@@ -105,14 +106,14 @@ const createMuseum = async (req, res, next) => {
 const updateMuseum = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { nama_museum, deskripsi, latitude, longitude, provinsi_id, kabupaten_id, kategori_id } = req.body;
+    const { nama_museum, deskripsi, harga_tiket, kepengurusan, website_url, latitude, longitude, provinsi_id, kabupaten_id, kategori_id } = req.body;
 
     if (!nama_museum || !latitude || !longitude || !provinsi_id || !kabupaten_id) {
       return errorResponse(res, 400, 'Field nama_museum, latitude, longitude, provinsi_id, dan kabupaten_id wajib diisi');
     }
 
     const museum = await adminService.updateMuseum(id, {
-      nama_museum, deskripsi, latitude, longitude, provinsi_id, kabupaten_id, kategori_id,
+      nama_museum, deskripsi, harga_tiket, kepengurusan, website_url, latitude, longitude, provinsi_id, kabupaten_id, kategori_id,
     });
 
     if (!museum) {
@@ -143,6 +144,45 @@ const deleteMuseum = async (req, res, next) => {
   }
 };
 
+/**
+ * GET /api/admin/interactions
+ */
+const getInteractions = async (req, res, next) => {
+  try {
+    const { type, museum_id, page = 1, limit = 10 } = req.query;
+    const result = await interactionService.getAllInteractions({ 
+      type, 
+      museum_id, 
+      page: parseInt(page, 10), 
+      limit: parseInt(limit, 10) 
+    });
+    return successResponse(res, 'Daftar interaksi berhasil diambil oleh admin', result.data, 200, {
+      total_data: result.total,
+      page: result.page,
+      limit: result.limit,
+      total_pages: result.totalPages
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * DELETE /api/admin/interactions/:id
+ */
+const deleteInteraction = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const deleted = await interactionService.deleteInteraction(id);
+    if (!deleted) {
+      return errorResponse(res, 404, `Interaksi dengan ID ${id} tidak ditemukan`);
+    }
+    return successResponse(res, 'Interaksi berhasil dihapus oleh admin');
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getDashboardStats,
   getMuseumsByProvince,
@@ -152,4 +192,6 @@ module.exports = {
   createMuseum,
   updateMuseum,
   deleteMuseum,
+  getInteractions,
+  deleteInteraction,
 };

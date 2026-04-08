@@ -1,7 +1,9 @@
 import React from 'react';
 import { Landmark, Twitter, Instagram, Facebook, Mail } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const Footer = () => {
+  const { t } = useLanguage();
   return (
     <footer className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -18,18 +20,18 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
-              Your gateway to exploring the rich historical, artistic, and cultural heritage of Indonesia through its magnificent museums.
+              {t('footer_desc')}
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold text-slate-900 dark:text-white mb-4">Explore</h4>
+            <h4 className="font-semibold text-slate-900 dark:text-white mb-4">{t('quick_links')}</h4>
             <ul className="space-y-3">
-              <li><a href="#home" className="text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors text-sm">Home</a></li>
-              <li><a href="#what-is-museum" className="text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors text-sm">About Museums</a></li>
-              <li><a href="#types" className="text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors text-sm">Categories</a></li>
-              <li><a href="#featured" className="text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors text-sm">Featured List</a></li>
+              <li><a href="#home" className="text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors text-sm">{t('home')}</a></li>
+              <li><a href="#what-is-museum" className="text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors text-sm">{t('about')}</a></li>
+              <li><a href="#types" className="text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors text-sm">{t('types')}</a></li>
+              <li><a href="#featured" className="text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors text-sm">{t('featured')}</a></li>
             </ul>
           </div>
 
@@ -37,10 +39,9 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-slate-900 dark:text-white mb-4">Platform</h4>
             <ul className="space-y-3">
-              <li><a href="#" className="text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors text-sm">Interactive Map</a></li>
-              <li><a href="#" className="text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors text-sm">Museum Directory</a></li>
-              <li><a href="#faq" className="text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors text-sm">FAQ</a></li>
-              <li><a href="#" className="text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors text-sm">Contact Us</a></li>
+              <li><a href="#" className="text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors text-sm">{t('explore_map')}</a></li>
+              <li><a href="#faq" className="text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors text-sm">{t('faq')}</a></li>
+              <li><a href="#" className="text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors text-sm">{t('contact_us')}</a></li>
             </ul>
           </div>
 
@@ -67,7 +68,7 @@ const Footer = () => {
 
         <div className="border-t border-slate-200 dark:border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-slate-500 dark:text-slate-400">
-            &copy; {new Date().getFullYear()} MuseumNesia. All rights reserved.
+            &copy; {new Date().getFullYear()} MuseumNesia. {t('rights_reserved')}
           </p>
           <div className="flex gap-6">
             <a href="#" className="text-sm text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors">Privacy Policy</a>

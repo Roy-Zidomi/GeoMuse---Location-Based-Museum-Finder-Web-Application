@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getProvinces, getRegencies, getCategories } from '../../api/museumApi';
-import { ChevronDown, Save, X, Loader2 } from 'lucide-react';
+import { ChevronDown, Save, X, Loader2, Globe } from 'lucide-react';
 
 const MuseumForm = ({ museum = null, onSubmit, onCancel, loading = false }) => {
   const isEdit = !!museum;
@@ -8,6 +8,9 @@ const MuseumForm = ({ museum = null, onSubmit, onCancel, loading = false }) => {
   const [formData, setFormData] = useState({
     nama_museum: '',
     deskripsi: '',
+    harga_tiket: '',
+    kepengurusan: '',
+    website_url: '',
     latitude: '',
     longitude: '',
     provinsi_id: '',
@@ -27,6 +30,9 @@ const MuseumForm = ({ museum = null, onSubmit, onCancel, loading = false }) => {
       setFormData({
         nama_museum: museum.nama_museum || '',
         deskripsi: museum.deskripsi || '',
+        harga_tiket: museum.harga_tiket || '',
+        kepengurusan: museum.kepengurusan || '',
+        website_url: museum.website_url || '',
         latitude: museum.latitude || '',
         longitude: museum.longitude || '',
         provinsi_id: museum.provinsi_id || '',
@@ -34,7 +40,7 @@ const MuseumForm = ({ museum = null, onSubmit, onCancel, loading = false }) => {
         kategori_id: museum.kategori_id || '',
       });
     } else {
-      setFormData({ nama_museum: '', deskripsi: '', latitude: '', longitude: '', provinsi_id: '', kabupaten_id: '', kategori_id: '' });
+      setFormData({ nama_museum: '', deskripsi: '', harga_tiket: '', kepengurusan: '', latitude: '', longitude: '', provinsi_id: '', kabupaten_id: '', kategori_id: '' });
     }
   }, [museum]);
 
@@ -101,7 +107,7 @@ const MuseumForm = ({ museum = null, onSubmit, onCancel, loading = false }) => {
       });
       setSuccess(isEdit ? 'Museum berhasil diperbarui!' : 'Museum berhasil ditambahkan!');
       if (!isEdit) {
-        setFormData({ nama_museum: '', deskripsi: '', latitude: '', longitude: '', provinsi_id: '', kabupaten_id: '', kategori_id: '' });
+        setFormData({ nama_museum: '', deskripsi: '', harga_tiket: '', kepengurusan: '', website_url: '', latitude: '', longitude: '', provinsi_id: '', kabupaten_id: '', kategori_id: '' });
       }
     } catch (err) {
       setErrors({ submit: err.response?.data?.message || 'Terjadi kesalahan' });
@@ -158,8 +164,47 @@ const MuseumForm = ({ museum = null, onSubmit, onCancel, loading = false }) => {
             value={formData.deskripsi}
             onChange={(e) => handleChange('deskripsi', e.target.value)}
             placeholder="Tambahkan penjelasan tentang museum ini..."
-            className={`${inputClass('deskripsi')} min-h-[100px] resize-y`}
+            className={`${inputClass('deskripsi')} min-h-[80px] resize-y`}
           />
+        </div>
+
+        {/* Harga Tiket & Kepengurusan */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Harga Tiket (opsional)</label>
+            <input
+              type="text"
+              value={formData.harga_tiket}
+              onChange={(e) => handleChange('harga_tiket', e.target.value)}
+              placeholder="Contoh: Rp 5.000 atau Gratis"
+              className={inputClass('harga_tiket')}
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Kepengurusan (opsional)</label>
+            <input
+              type="text"
+              value={formData.kepengurusan}
+              onChange={(e) => handleChange('kepengurusan', e.target.value)}
+              placeholder="Contoh: Pemerintah Pusat"
+              className={inputClass('kepengurusan')}
+            />
+          </div>
+        </div>
+        
+        {/* Website URL */}
+        <div>
+          <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Situs Web Museum (opsional)</label>
+          <div className="relative">
+            <input
+              type="url"
+              value={formData.website_url}
+              onChange={(e) => handleChange('website_url', e.target.value)}
+              placeholder="https://www.museum-indonesia.com"
+              className={`${inputClass('website_url')} pl-10`}
+            />
+            <Globe size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          </div>
         </div>
 
         {/* Provinsi & Kabupaten */}

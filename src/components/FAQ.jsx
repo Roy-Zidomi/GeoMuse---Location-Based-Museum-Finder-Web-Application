@@ -1,24 +1,26 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const FAQ = () => {
+  const { t } = useLanguage();
   const faqs = [
     {
-      question: "What is a museum exactly?",
-      answer: "A museum is an institution that cares for a collection of artifacts and other objects of scientific, artistic, cultural, or historical importance and makes them available for public viewing through exhibits."
+      question: t('faq_1_q'),
+      answer: t('faq_1_a')
     },
     {
-      question: "Why are museums important for Indonesia?",
-      answer: "Indonesia is an archipelago with hundreds of distinct cultures, languages, and long histories spanning ancient kingdoms to colonial eras. Museums help preserve this immense diversity and educate future generations about their identity."
+      question: t('faq_2_q'),
+      answer: t('faq_2_a')
     },
     {
-      question: "Are all museums only about historical objects?",
-      answer: "Not at all! There are science museums, contemporary art galleries, transportation museums, maritime museums, and interactive children's museums. The landscape of museums is incredibly varied."
+      question: t('faq_3_q'),
+      answer: t('faq_3_a')
     },
     {
-      question: "Can this platform help me find the nearest museum?",
-      answer: "Yes, once our full application launches, you will be able to use location-based services to find museums near you, filter them by category and province, and plan your visits easily."
+      question: t('faq_4_q'),
+      answer: t('faq_4_a')
     }
   ];
 
@@ -39,7 +41,7 @@ const FAQ = () => {
             viewport={{ once: true }}
             className="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6"
           >
-            Frequently Asked Questions
+            {t('faq_title')}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -48,7 +50,7 @@ const FAQ = () => {
             transition={{ delay: 0.1 }}
             className="text-lg text-slate-600 dark:text-slate-400"
           >
-            Everything you need to know about our mission and the world of Indonesian museums.
+            {t('faq_subtitle')}
           </motion.p>
         </div>
 

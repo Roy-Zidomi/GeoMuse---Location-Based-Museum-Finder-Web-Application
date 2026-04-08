@@ -63,6 +63,9 @@ const getAllMuseums = async ({ page = 1, limit = 10, offset = 0, sort = 'id', or
       m.source_id,
       m.nama_museum,
       m.deskripsi,
+      m.harga_tiket,
+      m.kepengurusan,
+      m.website_url,
       m.latitude,
       m.longitude,
       m.provinsi_id,
@@ -70,7 +73,8 @@ const getAllMuseums = async ({ page = 1, limit = 10, offset = 0, sort = 'id', or
       m.kabupaten_id,
       k.nama_kabupaten,
       m.kategori_id,
-      kt.nama_kategori
+      kt.nama_kategori,
+      (SELECT photo_url FROM museum_interactions WHERE museum_id = m.id AND type = 'PHOTO' ORDER BY created_at DESC LIMIT 1) as foto_utama
     FROM museum m
     LEFT JOIN provinsi p ON m.provinsi_id = p.id
     LEFT JOIN kabupaten k ON m.kabupaten_id = k.id
@@ -103,6 +107,9 @@ const getMuseumById = async (id) => {
       m.source_id,
       m.nama_museum,
       m.deskripsi,
+      m.harga_tiket,
+      m.kepengurusan,
+      m.website_url,
       m.latitude,
       m.longitude,
       m.provinsi_id,
@@ -110,7 +117,8 @@ const getMuseumById = async (id) => {
       m.kabupaten_id,
       k.nama_kabupaten,
       m.kategori_id,
-      kt.nama_kategori
+      kt.nama_kategori,
+      (SELECT photo_url FROM museum_interactions WHERE museum_id = m.id AND type = 'PHOTO' ORDER BY created_at DESC LIMIT 1) as foto_utama
     FROM museum m
     LEFT JOIN provinsi p ON m.provinsi_id = p.id
     LEFT JOIN kabupaten k ON m.kabupaten_id = k.id
@@ -138,6 +146,9 @@ const getNearbyMuseums = async (lat, lng, radius, limit = 20) => {
       m.source_id,
       m.nama_museum,
       m.deskripsi,
+      m.harga_tiket,
+      m.kepengurusan,
+      m.website_url,
       m.latitude,
       m.longitude,
       m.provinsi_id,
@@ -146,6 +157,7 @@ const getNearbyMuseums = async (lat, lng, radius, limit = 20) => {
       k.nama_kabupaten,
       m.kategori_id,
       kt.nama_kategori,
+      (SELECT photo_url FROM museum_interactions WHERE museum_id = m.id AND type = 'PHOTO' ORDER BY created_at DESC LIMIT 1) as foto_utama,
       (
         6371 * acos(
           LEAST(1.0, 

@@ -1,53 +1,55 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Landmark, Palette, Users, Atom, Sword, Globe2 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const TypesMuseum = () => {
+  const { t } = useLanguage();
   const categories = [
     {
       icon: <Palette className="w-8 h-8" />,
-      title: "Art & Culture",
-      description: "Enjoy artistic works, traditions, and cultural expressions that reflect the richness of the archipelago.",
+      title: t('cat_art'),
+      description: t('cat_art_desc'),
       color: "from-pink-500 to-rose-500",
       bgLight: "bg-pink-50",
       bgDark: "dark:bg-pink-950/30"
     },
     {
       icon: <Landmark className="w-8 h-8" />,
-      title: "History",
-      description: "Explore the traces of the past, from ancient kingdoms to Indonesia's road to independence.",
+      title: t('cat_history'),
+      description: t('cat_history_desc'),
       color: "from-amber-400 to-orange-500",
       bgLight: "bg-amber-50",
       bgDark: "dark:bg-amber-950/30"
     },
     {
       icon: <Atom className="w-8 h-8" />,
-      title: "Science & Technology",
-      description: "Learn about scientific innovation and technological progress through educational interactive collections.",
+      title: t('cat_science'),
+      description: t('cat_science_desc'),
       color: "from-blue-400 to-indigo-500",
       bgLight: "bg-blue-50",
       bgDark: "dark:bg-blue-950/30"
     },
     {
       icon: <Globe2 className="w-8 h-8" />,
-      title: "Nature",
-      description: "Discover rich flora, fauna, geology, and environmental wonders from across Indonesia.",
+      title: t('cat_nature'),
+      description: t('cat_nature_desc'),
       color: "from-emerald-400 to-teal-500",
       bgLight: "bg-emerald-50",
       bgDark: "dark:bg-emerald-950/30"
     },
     {
       icon: <Sword className="w-8 h-8" />,
-      title: "Military",
-      description: "Understand the history of defense and struggle through military artifacts, strategy, and heroic stories.",
+      title: t('cat_military'),
+      description: t('cat_military_desc'),
       color: "from-slate-500 to-slate-700",
       bgLight: "bg-slate-100",
       bgDark: "dark:bg-slate-800/50"
     },
     {
       icon: <Users className="w-8 h-8" />,
-      title: "Special",
-      description: "Explore unique themes such as transportation, music, sports, or other curated thematic collections.",
+      title: t('cat_special'),
+      description: t('cat_special_desc'),
       color: "from-purple-400 to-fuchsia-500",
       bgLight: "bg-purple-50",
       bgDark: "dark:bg-purple-950/30"
@@ -79,7 +81,7 @@ const TypesMuseum = () => {
             viewport={{ once: true }}
             className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4"
           >
-            Diverse Museum Categories
+            {t('types_title')}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -88,7 +90,7 @@ const TypesMuseum = () => {
             transition={{ delay: 0.1 }}
             className="text-slate-600 dark:text-slate-400 text-lg"
           >
-            Indonesia is home to a vast array of museums, each dedicated to preserving a unique facet of our national identity. What will you explore today?
+            {t('types_subtitle')}
           </motion.p>
         </div>
 
