@@ -23,6 +23,7 @@ import {
   Camera,
 } from 'lucide-react';
 import { Pannellum } from "pannellum-react";
+import CubemapViewer from '../components/CubemapViewer';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -78,6 +79,8 @@ const MuseumDetailPage = () => {
       noDescription: 'Belum ada deskripsi museum.',
       source: 'Sumber Informasi',
       openGoogleMaps: 'Buka di Google Maps',
+      noVirtualTour: 'Belum ada virtual tour',
+      noLivecam: 'Belum ada livecam',
       translationFallback: '',
     },
     en: {
@@ -100,6 +103,8 @@ const MuseumDetailPage = () => {
       noDescription: 'No museum description is available yet.',
       source: 'Information Source',
       openGoogleMaps: 'Open in Google Maps',
+      noVirtualTour: 'No virtual tour available',
+      noLivecam: 'No livecam available',
       translationFallback: 'English translation is not available yet, so the original Indonesian text is shown.',
     },
   }[language] || {};
@@ -344,15 +349,17 @@ const MuseumDetailPage = () => {
               </DetailInfoCard>
             </div>
 
-            {(museum.virtual_tour_url || museum.livecam_url) && (
-              <div className="mt-8 space-y-6">
-                {museum.virtual_tour_url && (
-                  <div className="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-                    <div className="bg-slate-50 dark:bg-slate-800/50 p-4 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2">
-                      <Camera className="text-emerald-500" size={20} />
-                      <h3 className="font-bold text-slate-800 dark:text-slate-200">Virtual Tour</h3>
-                    </div>
-                    <div className="h-96 w-full">
+            <div className="mt-8 space-y-6">
+              <div className="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+                <div className="bg-slate-50 dark:bg-slate-800/50 p-4 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2">
+                  <Camera className="text-emerald-500" size={20} />
+                  <h3 className="font-bold text-slate-800 dark:text-slate-200">Virtual Tour</h3>
+                </div>
+                {museum.virtual_tour_url ? (
+                  <div className="h-96 w-full">
+                    {museum.virtual_tour_url.includes(',') ? (
+                      <CubemapViewer cubeMap={museum.virtual_tour_url.split(',')} />
+                    ) : (
                       <Pannellum
                         width="100%"
                         height="100%"
@@ -363,17 +370,23 @@ const MuseumDetailPage = () => {
                         autoLoad
                         onLoad={() => console.log('panorama loaded')}
                       />
-                    </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="p-8 text-center text-slate-500 dark:text-slate-400">
+                    <p className="font-medium">{text.noVirtualTour}</p>
                   </div>
                 )}
+              </div>
 
-                {museum.livecam_url && (
-                  <div className="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-                    <div className="bg-slate-50 dark:bg-slate-800/50 p-4 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2">
-                      <Video className="text-emerald-500" size={20} />
-                      <h3 className="font-bold text-slate-800 dark:text-slate-200">Livecam</h3>
-                    </div>
-                    <div className="h-96 w-full relative">
+              <div className="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+                <div className="bg-slate-50 dark:bg-slate-800/50 p-4 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2">
+                  <Video className="text-emerald-500" size={20} />
+                  <h3 className="font-bold text-slate-800 dark:text-slate-200">Livecam</h3>
+                </div>
+                {museum.livecam_url ? (
+                  <div className="h-96 w-full relative bg-black flex items-center justify-center">
+                    {museum.livecam_url.includes('youtube.com') ? (
                       <iframe
                         src={museum.livecam_url}
                         title="Livecam"
@@ -381,11 +394,28 @@ const MuseumDetailPage = () => {
                         allowFullScreen
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       ></iframe>
-                    </div>
+                    ) : museum.livecam_url.match(/\.(jpeg|jpg|mjpeg|png)$/i) || museum.livecam_url.includes('/video') ? (
+                      <img 
+                        src={museum.livecam_url} 
+                        alt="Livecam Stream" 
+                        className="w-full h-full object-contain"
+                      />
+                    ) : (
+                      <iframe
+                        src={museum.livecam_url}
+                        title="Livecam"
+                        className="absolute inset-0 w-full h-full border-0"
+                        allowFullScreen
+                      ></iframe>
+                    )}
+                  </div>
+                ) : (
+                  <div className="p-8 text-center text-slate-500 dark:text-slate-400">
+                    <p className="font-medium">{text.noLivecam}</p>
                   </div>
                 )}
               </div>
-            )}
+            </div>
 
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
