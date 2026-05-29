@@ -32,9 +32,23 @@ const MuseumForm = ({ museum = null, onSubmit, onCancel, loading = false }) => {
   const [categories, setCategories] = useState([]);
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState('');
+  const [tourType, setTourType] = useState('equirectangular');
+  const [cubemapUrls, setCubemapUrls] = useState(['', '', '', '', '', '']);
 
   // Prefill form when editing
   useEffect(() => {
+    let initialTourType = 'equirectangular';
+    let initialCubemap = ['', '', '', '', '', ''];
+    if (museum && museum.virtual_tour_url) {
+      if (museum.virtual_tour_url.includes(',')) {
+        initialTourType = 'cubemap';
+        initialCubemap = museum.virtual_tour_url.split(',');
+        while(initialCubemap.length < 6) initialCubemap.push('');
+      }
+    }
+    setTourType(initialTourType);
+    setCubemapUrls(initialCubemap);
+
     const nextFormData = museum
       ? {
         nama_museum: museum.nama_museum || '',
@@ -136,8 +150,11 @@ const MuseumForm = ({ museum = null, onSubmit, onCancel, loading = false }) => {
     if (!validate()) return;
 
     try {
+      const finalVirtualTourUrl = tourType === 'cubemap' ? cubemapUrls.join(',') : formData.virtual_tour_url;
+      
       await onSubmit({
         ...formData,
+        virtual_tour_url: finalVirtualTourUrl,
         latitude: parseFloat(formData.latitude),
         longitude: parseFloat(formData.longitude),
         provinsi_id: parseInt(formData.provinsi_id),
@@ -168,6 +185,8 @@ const MuseumForm = ({ museum = null, onSubmit, onCancel, loading = false }) => {
           virtual_tour_url: '',
           livecam_url: '',
         });
+        setTourType('equirectangular');
+        setCubemapUrls(['', '', '', '', '', '']);
       }
     } catch (err) {
       setErrors({ submit: err.response?.data?.message || 'Terjadi kesalahan' });
@@ -345,17 +364,50 @@ const MuseumForm = ({ museum = null, onSubmit, onCancel, loading = false }) => {
 
         {/* Fitur Virtual */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Virtual Tour (Pannellum Image URL)</label>
-            <input
-              type="url"
-              value={formData.virtual_tour_url}
-              onChange={(e) => handleChange('virtual_tour_url', e.target.value)}
-              placeholder="https://domain.com/pano.jpg"
-              className={inputClass('virtual_tour_url')}
-            />
+          <div className="col-span-1 sm:col-span-2 border border-slate-200 dark:border-slate-700 p-4 rounded-xl">
+            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Virtual Tour (Pannellum)</label>
+            <div className="flex gap-4 mb-4">
+              <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-slate-700 dark:text-slate-300">
+                <input type="radio" checked={tourType === 'equirectangular'} onChange={() => setTourType('equirectangular')} className="text-emerald-500 w-4 h-4" />
+                Equirectangular (1 Gambar 2:1)
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-slate-700 dark:text-slate-300">
+                <input type="radio" checked={tourType === 'cubemap'} onChange={() => setTourType('cubemap')} className="text-emerald-500 w-4 h-4" />
+                Cubemap (6 Gambar Kotak)
+              </label>
+            </div>
+
+            {tourType === 'equirectangular' ? (
+              <input
+                type="url"
+                value={formData.virtual_tour_url}
+                onChange={(e) => handleChange('virtual_tour_url', e.target.value)}
+                placeholder="https://domain.com/pano.jpg"
+                className={inputClass('virtual_tour_url')}
+              />
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {['Depan (+z)', 'Kanan (+x)', 'Belakang (-z)', 'Kiri (-x)', 'Atas (+y)', 'Bawah (-y)'].map((label, i) => (
+                  <div key={label}>
+                    <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">{label}</label>
+                    <input
+                      type="url"
+                      value={cubemapUrls[i]}
+                      onChange={(e) => {
+                        const newUrls = [...cubemapUrls];
+                        newUrls[i] = e.target.value;
+                        setCubemapUrls(newUrls);
+                      }}
+                      placeholder={`URL Gambar ${label.split(' ')[0]}`}
+                      className={inputClass('virtual_tour_url')}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-          <div>
+          
+          <div className="col-span-1 sm:col-span-2">
             <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Livecam URL (Embed/Video)</label>
             <input
               type="url"

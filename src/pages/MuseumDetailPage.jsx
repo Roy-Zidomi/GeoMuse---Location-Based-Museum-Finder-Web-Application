@@ -23,6 +23,7 @@ import {
   Camera,
 } from 'lucide-react';
 import { Pannellum } from "pannellum-react";
+import CubemapViewer from '../components/CubemapViewer';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -83,6 +84,8 @@ const MuseumDetailPage = () => {
       livecamNotConfigured: 'Live cam belum dikonfigurasi.',
       livecamUnavailable: 'Live cam belum dapat dimuat.',
       openGoogleMaps: 'Buka di Google Maps',
+      noVirtualTour: 'Belum ada virtual tour',
+      noLivecam: 'Belum ada livecam',
       translationFallback: '',
     },
     en: {
@@ -108,6 +111,8 @@ const MuseumDetailPage = () => {
       livecamNotConfigured: 'Live cam is not configured yet.',
       livecamUnavailable: 'Live cam could not be loaded.',
       openGoogleMaps: 'Open in Google Maps',
+      noVirtualTour: 'No virtual tour available',
+      noLivecam: 'No livecam available',
       translationFallback: 'English translation is not available yet, so the original Indonesian text is shown.',
     },
   }[language] || {};
@@ -357,13 +362,16 @@ const MuseumDetailPage = () => {
             </div>
 
             <div className="mt-8 space-y-6">
-                {museum.virtual_tour_url && (
-                  <div className="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-                    <div className="bg-slate-50 dark:bg-slate-800/50 p-4 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2">
-                      <Camera className="text-emerald-500" size={20} />
-                      <h3 className="font-bold text-slate-800 dark:text-slate-200">Virtual Tour</h3>
-                    </div>
-                    <div className="h-96 w-full">
+              <div className="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+                <div className="bg-slate-50 dark:bg-slate-800/50 p-4 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2">
+                  <Camera className="text-emerald-500" size={20} />
+                  <h3 className="font-bold text-slate-800 dark:text-slate-200">Virtual Tour</h3>
+                </div>
+                {museum.virtual_tour_url ? (
+                  <div className="h-96 w-full">
+                    {museum.virtual_tour_url.includes(',') ? (
+                      <CubemapViewer cubeMap={museum.virtual_tour_url.split(',')} />
+                    ) : (
                       <Pannellum
                         width="100%"
                         height="100%"
@@ -374,32 +382,60 @@ const MuseumDetailPage = () => {
                         autoLoad
                         onLoad={() => console.log('panorama loaded')}
                       />
-                    </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="p-8 text-center text-slate-500 dark:text-slate-400">
+                    <p className="font-medium">{text.noVirtualTour}</p>
                   </div>
                 )}
+              </div>
 
-                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-                  <div className="bg-slate-50 dark:bg-slate-800/50 p-4 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2">
-                    <Video className="text-emerald-500" size={20} />
-                    <h3 className="font-bold text-slate-800 dark:text-slate-200">{text.livecam}</h3>
-                  </div>
-                  <div className="aspect-video w-full bg-slate-950 relative overflow-hidden">
-                    {livecamUrl && !livecamError ? (
-                      <img
-                        src={livecamUrl}
-                        alt={text.livecam}
-                        className="absolute inset-0 h-full w-full object-contain"
-                        onError={() => setFailedLivecamUrl(livecamUrl)}
-                      />
+              <div className="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+                <div className="bg-slate-50 dark:bg-slate-800/50 p-4 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2">
+                  <Video className="text-emerald-500" size={20} />
+                  <h3 className="font-bold text-slate-800 dark:text-slate-200">{text.livecam}</h3>
+                </div>
+                {livecamUrl ? (
+                  <div className="aspect-video w-full bg-slate-950 relative overflow-hidden flex items-center justify-center">
+                    {!livecamError ? (
+                      livecamUrl.includes('youtube.com') ? (
+                        <iframe
+                          src={livecamUrl}
+                          title={text.livecam}
+                          className="absolute inset-0 w-full h-full border-0"
+                          allowFullScreen
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        ></iframe>
+                      ) : livecamUrl.match(/\.(jpeg|jpg|mjpeg|png)$/i) || livecamUrl.includes('/video') ? (
+                        <img 
+                          src={livecamUrl} 
+                          alt={text.livecam} 
+                          className="absolute inset-0 h-full w-full object-contain"
+                          onError={() => setFailedLivecamUrl(livecamUrl)}
+                        />
+                      ) : (
+                        <iframe
+                          src={livecamUrl}
+                          title={text.livecam}
+                          className="absolute inset-0 w-full h-full border-0"
+                          allowFullScreen
+                        ></iframe>
+                      )
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center px-4 text-center">
                         <p className="text-sm font-medium text-slate-300">
-                          {livecamUrl ? text.livecamUnavailable : text.livecamNotConfigured}
+                          {text.livecamUnavailable}
                         </p>
                       </div>
                     )}
                   </div>
-                </div>
+                ) : (
+                  <div className="p-8 text-center text-slate-500 dark:text-slate-400">
+                    <p className="font-medium">{text.livecamNotConfigured}</p>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="mt-8 flex flex-wrap gap-3">

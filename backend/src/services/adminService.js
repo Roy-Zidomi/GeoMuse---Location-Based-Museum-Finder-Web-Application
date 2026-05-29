@@ -8,6 +8,44 @@ const sanitizeOptionalText = (value) => {
   return trimmed.length > 0 ? trimmed : null;
 };
 
+const formatLivecamUrl = (url) => {
+  const sanitized = sanitizeOptionalText(url);
+  if (!sanitized) return null;
+  
+  try {
+    const parsedUrl = new URL(sanitized);
+    
+    // Handle youtu.be/<id>
+    if (parsedUrl.hostname === 'youtu.be') {
+      const videoId = parsedUrl.pathname.slice(1);
+      if (videoId) return `https://www.youtube.com/embed/${videoId}`;
+    }
+    
+    // Handle youtube.com
+    if (parsedUrl.hostname.includes('youtube.com')) {
+      // Handle youtube.com/live/<id>
+      if (parsedUrl.pathname.startsWith('/live/')) {
+        const videoId = parsedUrl.pathname.split('/')[2];
+        if (videoId) return `https://www.youtube.com/embed/${videoId}`;
+      }
+      // Handle youtube.com/watch?v=<id>
+      if (parsedUrl.pathname === '/watch' || parsedUrl.pathname === '/watch/') {
+        const videoId = parsedUrl.searchParams.get('v');
+        if (videoId) return `https://www.youtube.com/embed/${videoId}`;
+      }
+      // Handle youtube.com/shorts/<id>
+      if (parsedUrl.pathname.startsWith('/shorts/')) {
+        const videoId = parsedUrl.pathname.split('/')[2];
+        if (videoId) return `https://www.youtube.com/embed/${videoId}`;
+      }
+    }
+  } catch (e) {
+    // Abaikan jika URL tidak valid
+  }
+  
+  return sanitized;
+};
+
 /**
  * Helper: bangun WHERE clause dari filter global
  */
@@ -255,7 +293,7 @@ const createMuseum = async ({
     sanitizeOptionalText(sumber_informasi),
     sanitizeOptionalText(foto_url),
     sanitizeOptionalText(virtual_tour_url),
-    sanitizeOptionalText(livecam_url),
+    formatLivecamUrl(livecam_url),
   ];
   const result = await query(sql, params);
   return result.rows[0];
@@ -323,7 +361,7 @@ const updateMuseum = async (
     sanitizeOptionalText(sumber_informasi),
     sanitizeOptionalText(foto_url),
     sanitizeOptionalText(virtual_tour_url),
-    sanitizeOptionalText(livecam_url),
+    formatLivecamUrl(livecam_url),
     id,
   ];
   const result = await query(sql, params);
