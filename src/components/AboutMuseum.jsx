@@ -105,7 +105,7 @@ const AboutMuseum = () => {
               {text.description}
             </p>
 
-            <div className="pt-8 grid sm:grid-cols-2 gap-6">
+            <div className="pt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
               {text.features.map((feature, idx) => (
                 <div key={idx} className="flex gap-4">
                   <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0 shadow-sm">

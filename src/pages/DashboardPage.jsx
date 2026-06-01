@@ -18,7 +18,7 @@ const DashboardPage = () => {
   const { admin } = useAuth();
 
   // UI State
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(() => typeof window !== 'undefined' && window.innerWidth >= 1024);
   const [activeMenu, setActiveMenu] = useState('dashboard');
   const [loading, setLoading] = useState(true);
   const [formLoading, setFormLoading] = useState(false);
@@ -259,7 +259,7 @@ const DashboardPage = () => {
       {/* Main Content */}
       <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
         {/* Top Bar */}
-        <header className="flex items-center justify-between h-[4.5rem] px-6 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+        <header className="flex items-center justify-between h-14 sm:h-[4.5rem] px-3 sm:px-6 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
           <div className="flex items-center gap-3">
             <button
               type="button"
@@ -275,9 +275,9 @@ const DashboardPage = () => {
         </header>
 
         {/* Content Area */}
-        <main className="flex-1 overflow-y-auto p-6">
-          <section className="mb-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-gradient-to-r from-emerald-500/10 via-transparent to-transparent bg-white/80 dark:bg-slate-900 px-6 py-5">
-            <h1 className="text-3xl font-extrabold text-slate-800 dark:text-white">{menuTitles[activeMenu]}</h1>
+        <main className="flex-1 overflow-y-auto p-3 sm:p-6">
+          <section className="mb-4 sm:mb-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-gradient-to-r from-emerald-500/10 via-transparent to-transparent bg-white/80 dark:bg-slate-900 px-4 py-4 sm:px-6 sm:py-5">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-white">{menuTitles[activeMenu]}</h1>
             <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               {menuDescriptions[activeMenu]} Selamat datang, {admin?.email || 'Admin'}.
             </p>

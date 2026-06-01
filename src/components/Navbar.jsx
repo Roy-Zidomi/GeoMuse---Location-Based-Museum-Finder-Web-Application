@@ -176,92 +176,93 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <MotionDiv
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="md:hidden fixed inset-0 z-[70] bg-slate-950/45 backdrop-blur-sm"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <MotionAside
-                initial={{ x: -320 }}
-                animate={{ x: 0 }}
-                exit={{ x: -340 }}
-                transition={{ type: 'spring', stiffness: 280, damping: 30 }}
-                className="h-full w-[84%] max-w-xs bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="px-4 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
-                  <span className="text-base font-semibold text-slate-800 dark:text-white">{text.menu}</span>
-                  <button
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="p-2 rounded-lg text-slate-500 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                    aria-label={text.closeMenu}
-                  >
-                    <X size={20} />
-                  </button>
-                </div>
-
-                <div className="px-4 py-4 space-y-2 flex-1 overflow-y-auto">
-                  {navLinks.map((link) => (
-                    <a
-                      key={link.name}
-                      href={isLandingPage ? link.href : `/${link.href}`}
-                      className="block px-4 py-3 text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      {link.name}
-                    </a>
-                  ))}
-                </div>
-
-                <div className="px-4 py-4 border-t border-slate-200 dark:border-slate-800 space-y-3">
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      onClick={() => changeLanguage('id')}
-                      className={`w-full py-2.5 rounded-xl text-sm font-semibold transition-colors ${
-                        language === 'id'
-                          ? 'bg-emerald-500 text-white'
-                          : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'
-                      }`}
-                    >
-                      Indonesia
-                    </button>
-                    <button
-                      onClick={() => changeLanguage('en')}
-                      className={`w-full py-2.5 rounded-xl text-sm font-semibold transition-colors ${
-                        language === 'en'
-                          ? 'bg-emerald-500 text-white'
-                          : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'
-                      }`}
-                    >
-                      English
-                    </button>
-                  </div>
-                  <button
-                    onClick={toggleTheme}
-                    className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium transition-colors"
-                  >
-                    {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-                    {theme === 'dark' ? text.lightMode : text.darkMode}
-                  </button>
-                  <Link
-                    to="/map"
-                    className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-indigo-500 text-white font-medium shadow-md"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <Map size={16} />
-                    {text.exploreMap}
-                  </Link>
-                </div>
-              </MotionAside>
-            </MotionDiv>
-          )}
-        </AnimatePresence>
       </MotionDiv>
+
+      {/* Mobile Menu - rendered outside MotionDiv to avoid clipping by rounded corners */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <MotionDiv
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="md:hidden fixed inset-0 z-[70] bg-slate-950/45 backdrop-blur-sm"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <MotionAside
+              initial={{ x: -320 }}
+              animate={{ x: 0 }}
+              exit={{ x: -340 }}
+              transition={{ type: 'spring', stiffness: 280, damping: 30 }}
+              className="h-full w-[84%] max-w-xs bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="px-4 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <span className="text-base font-semibold text-slate-800 dark:text-white">{text.menu}</span>
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-2 rounded-lg text-slate-500 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                  aria-label={text.closeMenu}
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="px-4 py-4 space-y-1 flex-1 overflow-y-auto min-h-0">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.name}
+                    href={isLandingPage ? link.href : `/${link.href}`}
+                    className="block px-4 py-2.5 text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.name}
+                  </a>
+                ))}
+              </div>
+
+              <div className="px-4 py-4 border-t border-slate-200 dark:border-slate-800 space-y-3 shrink-0">
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => changeLanguage('id')}
+                    className={`w-full py-2.5 rounded-xl text-sm font-semibold transition-colors ${
+                      language === 'id'
+                        ? 'bg-emerald-500 text-white'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'
+                    }`}
+                  >
+                    Indonesia
+                  </button>
+                  <button
+                    onClick={() => changeLanguage('en')}
+                    className={`w-full py-2.5 rounded-xl text-sm font-semibold transition-colors ${
+                      language === 'en'
+                        ? 'bg-emerald-500 text-white'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'
+                    }`}
+                  >
+                    English
+                  </button>
+                </div>
+                <button
+                  onClick={toggleTheme}
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium transition-colors"
+                >
+                  {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                  {theme === 'dark' ? text.lightMode : text.darkMode}
+                </button>
+                <Link
+                  to="/map"
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-indigo-500 text-white font-medium shadow-md"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Map size={16} />
+                  {text.exploreMap}
+                </Link>
+              </div>
+            </MotionAside>
+          </MotionDiv>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };

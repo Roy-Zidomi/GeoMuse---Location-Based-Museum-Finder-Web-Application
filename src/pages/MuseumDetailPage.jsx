@@ -37,15 +37,15 @@ const defaultIcon = L.icon({
   shadowSize: [41, 41],
 });
 
-const infoValueClass = 'text-base font-semibold text-slate-800 dark:text-slate-200 mt-0.5';
+const infoValueClass = 'text-base font-semibold text-slate-800 dark:text-slate-200 mt-0.5 break-words';
 const globalLivecamUrl = (import.meta.env.VITE_LIVE_CAM_URL || '').trim();
 
 const DetailInfoCard = ({ icon, title, children }) => (
-  <div className="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50">
-    <div className="p-2.5 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 shrink-0">
+  <div className="flex items-start gap-3 p-3 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 min-w-0">
+    <div className="p-2 sm:p-2.5 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 shrink-0">
       {icon}
     </div>
-    <div>
+    <div className="min-w-0 flex-1">
       <p className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">{title}</p>
       {children}
     </div>
@@ -193,18 +193,18 @@ const MuseumDetailPage = () => {
             </Link>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <button
               type="button"
               onClick={toggleTheme}
-              className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-600 transition-colors hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+              className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-600 transition-colors hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
               aria-label={text.themeAria}
             >
               {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
             </button>
 
             <div
-              className="flex items-center rounded-xl border border-slate-200 bg-slate-100 p-1 dark:border-slate-700 dark:bg-slate-800"
+              className="hidden sm:flex items-center rounded-xl border border-slate-200 bg-slate-100 p-1 dark:border-slate-700 dark:bg-slate-800"
               aria-label={text.languageAria}
             >
               <button
@@ -231,7 +231,7 @@ const MuseumDetailPage = () => {
 
             <Link
               to="/map"
-              className="flex h-10 items-center gap-1.5 rounded-xl bg-slate-100 px-3 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+              className="flex h-9 sm:h-10 items-center gap-1.5 rounded-xl bg-slate-100 px-2.5 sm:px-3 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
               aria-label={text.backToMap}
             >
               <ArrowLeft size={16} />
@@ -244,7 +244,7 @@ const MuseumDetailPage = () => {
       <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden">
           {museum.foto_url && (
-            <div className="h-56 sm:h-72 w-full bg-slate-200 dark:bg-slate-800 relative overflow-hidden">
+            <div className="h-44 sm:h-56 md:h-72 w-full bg-slate-200 dark:bg-slate-800 relative overflow-hidden">
               <img
                 src={museum.foto_url}
                 alt={museum.nama_museum}
@@ -258,7 +258,7 @@ const MuseumDetailPage = () => {
           )}
 
           {hasCoordinates && (
-            <div className="h-64 sm:h-80 w-full relative">
+            <div className="h-48 sm:h-64 md:h-80 w-full relative">
               <MapContainer
                 center={[parseFloat(museum.latitude), parseFloat(museum.longitude)]}
                 zoom={15}
@@ -280,8 +280,8 @@ const MuseumDetailPage = () => {
             </div>
           )}
 
-          <div className="p-6 sm:p-8">
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-6">{museum.nama_museum}</h1>
+          <div className="p-4 sm:p-6 md:p-8">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4 sm:mb-6">{museum.nama_museum}</h1>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <DetailInfoCard icon={<Globe size={20} />} title={text.province}>
@@ -368,7 +368,7 @@ const MuseumDetailPage = () => {
                   <h3 className="font-bold text-slate-800 dark:text-slate-200">Virtual Tour</h3>
                 </div>
                 {museum.virtual_tour_url ? (
-                  <div className="h-96 w-full">
+                  <div className="h-64 sm:h-80 md:h-96 w-full">
                     {museum.virtual_tour_url.includes(',') ? (
                       <CubemapViewer cubeMap={museum.virtual_tour_url.split(',')} />
                     ) : (
@@ -438,10 +438,10 @@ const MuseumDetailPage = () => {
               </div>
             </div>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3">
               <Link
                 to="/map"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 font-medium transition-colors text-sm"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 font-medium transition-colors text-sm"
               >
                 <ArrowLeft size={16} />
                 {text.backToMap}
@@ -451,7 +451,7 @@ const MuseumDetailPage = () => {
                   href={googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-medium transition-colors text-sm shadow-lg shadow-emerald-500/25"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-medium transition-colors text-sm shadow-lg shadow-emerald-500/25"
                 >
                   <MapPin size={16} />
                   {text.openGoogleMaps}

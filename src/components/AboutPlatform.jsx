@@ -100,7 +100,7 @@ const AboutPlatform = () => {
               {text.description}
             </p>
 
-            <div className="grid sm:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {text.features.map((item, idx) => (
                 <div key={idx} className="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/50 hover:border-indigo-500/30 transition-colors">
                   <div className="text-indigo-600 dark:text-indigo-400 mb-4">{item.icon}</div>

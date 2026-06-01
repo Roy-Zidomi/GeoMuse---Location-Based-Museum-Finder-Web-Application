@@ -62,7 +62,7 @@ const MapPage = () => {
   const [nearbyRadius, setNearbyRadius] = useState(50);
 
   // UI state
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(() => typeof window !== 'undefined' && window.innerWidth >= 1024);
   const [totalData, setTotalData] = useState(0);
 
   // Fetch master data (provinces, categories) on mount
@@ -226,7 +226,7 @@ const MapPage = () => {
   return (
     <div className="h-screen w-screen flex flex-col bg-slate-50 dark:bg-slate-950 overflow-hidden">
       {/* Top Bar */}
-      <header className="relative z-20 flex items-center justify-between px-4 py-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800">
+      <header className="relative z-20 flex items-center justify-between px-2 sm:px-4 py-2 sm:py-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800">
         <div className="flex items-center gap-3">
           {/* Mobile sidebar toggle */}
           <button
@@ -257,7 +257,7 @@ const MapPage = () => {
           </button>
 
           <div
-            className="flex items-center rounded-xl border border-slate-200 bg-slate-100 p-1 dark:border-slate-700 dark:bg-slate-800"
+            className="hidden sm:flex items-center rounded-xl border border-slate-200 bg-slate-100 p-1 dark:border-slate-700 dark:bg-slate-800"
             aria-label={text.languageAria}
           >
             <button
