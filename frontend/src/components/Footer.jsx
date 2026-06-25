@@ -1,5 +1,6 @@
 import React from 'react';
 import { Landmark, Twitter, Instagram, Facebook, Mail } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 
 const Footer = () => {
@@ -18,6 +19,7 @@ const Footer = () => {
       museumDirectory: 'Direktori Museum',
       faq: 'FAQ',
       contactUs: 'Hubungi Kami',
+      adminPortal: 'Portal Admin',
       connect: 'Terhubung',
       rightsReserved: 'Hak cipta dilindungi.',
       privacyPolicy: 'Kebijakan Privasi',
@@ -36,6 +38,7 @@ const Footer = () => {
       museumDirectory: 'Museum Directory',
       faq: 'FAQ',
       contactUs: 'Contact Us',
+      adminPortal: 'Admin Portal',
       connect: 'Connect',
       rightsReserved: 'All rights reserved.',
       privacyPolicy: 'Privacy Policy',
@@ -83,6 +86,7 @@ const Footer = () => {
               <li><a href="#" className="text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors text-sm">{text.museumDirectory}</a></li>
               <li><a href="#faq" className="text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors text-sm">{text.faq}</a></li>
               <li><a href="#" className="text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors text-sm">{text.contactUs}</a></li>
+              <li><Link to="/admin/login" className="text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors text-sm">{text.adminPortal}</Link></li>
             </ul>
           </div>
 
